@@ -2,7 +2,9 @@ export default class GolfMap
 {
   static ObjectType={
     Grass:0,
-    Wall:1
+    Wall:1,
+    Hole:2,
+    Start:3
   }
 
   #width;
@@ -18,6 +20,7 @@ export default class GolfMap
     ctx.drawImage(bitmap,0,0);
     const image_data=ctx.getImageData(0,0,this.#width,this.#height);
     const data=image_data.data;
+    let hole_found=false, start_found=false;
     for(let y=0;y<this.#height;++y)
     {
       this.#map[y]=[];
@@ -28,10 +31,28 @@ export default class GolfMap
           this.#map[y][x]=GolfMap.ObjectType.Wall;
         else if(data[offset]==255&&data[offset+1]==255&&data[offset+2]==255)
           this.#map[y][x]=GolfMap.ObjectType.Grass;
+        else if(data[offset]==255&&data[offset+1]==0&&data[offset+2]==0)
+        {
+          if(hole_found)
+            throw new Error("Map can contain only one hole!");
+          hole_found=true;
+          this.#map[y][x]=GolfMap.ObjectType.Hole;
+        }
+        else if(data[offset]==0&&data[offset+1]==255&&data[offset+2]==0)
+        {
+          if(start_found)
+            throw new Error("Map can contain only one starting point!");
+          start_found=true;
+          this.#map[y][x]=GolfMap.ObjectType.Start;
+        }
         else
           throw new Error("Invalid color used!");
       }
     }
+    if(!start_found)
+      throw new Error("Map must contain a starting point!");
+    if(!hole_found)
+      throw new Error("Map must contain a hole!");
   }
   
   get width()
