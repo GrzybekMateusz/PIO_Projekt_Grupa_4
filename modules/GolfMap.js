@@ -1,5 +1,10 @@
-class GolfMap
+export default class GolfMap
 {
+  static ObjectType={
+    Grass:0,
+    Wall:1
+  }
+
   #width;
   #height;
   #map=[];
@@ -38,24 +43,27 @@ class GolfMap
       {
         let offset=(y*width+x)*4;
         if(data[offset]==0&&data[offset+1]==0&&data[offset+2]==0)
-          this.#map[y][x]=0;
+          this.#map[y][x]=GolfMap.ObjectType.Wall;
         else if(data[offset]==255&&data[offset+1]==255&&data[offset+2]==255)
-          this.#map[y][x]=1;
+          this.#map[y][x]=GolfMap.ObjectType.Grass;
         else
-          this.#map[y][x]=2;
+          throw new Error("Invalid color used!");
       }
     }
-    console.log(this.#map);
+  }
+
+  get width()
+  {
+    return this.#width;
+  }
+
+  get height()
+  {
+    return this.#height;
+  }
+
+  get map()
+  {
+    return this.#map;
   }
 }
-
-map_upload=document.getElementById("map_upload");
-map_form=document.getElementById("map_form");
-try
-{
-  map_form.addEventListener("submit",(e)=>{new GolfMap(map_upload);e.preventDefault();});
-}
-catch(e)
-{
-}
-
