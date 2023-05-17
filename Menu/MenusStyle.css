@@ -51,3 +51,21 @@
     margin-top: 30%;
     background-color: lavender;
 }
+
+.MapRectangle {
+    display: inline-block;
+    margin-top: 2.5%;
+    width: 30%;
+    height: 35%;
+    margin-inline: 5% 0;
+    background-color: grey;
+}
+
+.MapButton {
+    display: inline-block;
+    width: 30%;
+    height: 10%;
+    margin-left: 5%;
+    font-size: 200%;
+    background-color: lavender;
+}
