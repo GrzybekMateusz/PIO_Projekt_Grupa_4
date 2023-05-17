@@ -52,6 +52,30 @@ async function handle(input)
   }
 }
 
-const map_upload=document.getElementById("map_upload");
-const map_form=document.getElementById("map_form");
-map_form.addEventListener("submit",(e)=>{handle(map_upload);e.preventDefault()});
+async function loadPage(page)
+{
+    const html=await fetch("pages/"+page+".html").then((data)=>data.text());
+    document.body.innerHTML=html;
+}
+
+const start_button=document.getElementById("start_button");
+start_button.addEventListener("click",async (e)=>{
+  await loadPage("PlayersMenu");
+  const map_selection_button=document.getElementById("map_selection_button");
+  map_selection_button.addEventListener("click",async (e)=>{
+    await loadPage("MapSelectionMenu");
+    const start_game_button=document.getElementById("start_game_button");
+    start_game_button.addEventListener("click",async (e)=>{
+      await loadPage("MapLoader");
+      const map_upload=document.getElementById("map_upload");
+      const map_form=document.getElementById("map_form");
+      map_form.addEventListener("submit",(e)=>{
+        handle(map_upload);
+        e.preventDefault()
+      });
+    });
+  });
+});
+
+
+
