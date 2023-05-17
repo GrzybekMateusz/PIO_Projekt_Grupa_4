@@ -63,9 +63,9 @@
 
 .MapButton {
     display: inline-block;
-    width: 30%;
+    width: 25%;
     height: 10%;
     margin-left: 5%;
-    font-size: 200%;
+    font-size: 100%;
     background-color: lavender;
 }
