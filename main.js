@@ -64,7 +64,7 @@ start_button.addEventListener("click",async (e)=>{
   const map_selection_button=document.getElementById("map_selection_button");
   map_selection_button.addEventListener("click",async (e)=>{
     await loadPage("MapSelectionMenu");
-    const start_game_button=document.getElementById("start_game_button");
+    const start_game_button=document.getElementById("add_map_button");
     start_game_button.addEventListener("click",async (e)=>{
       await loadPage("MapLoader");
       const map_upload=document.getElementById("map_upload");
