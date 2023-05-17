@@ -1,11 +1,9 @@
 .MenuRectangleCentre {
-    display: block;
-    margin-top: 5%;
+    margin-top: 2.5%;
     margin-left: auto;
     margin-right: auto;
     width: 40%;
-    height: 80%;
-    font-size: 250%;
+    height: 90%;
     padding-top: 2%;
     text-align: center;
     background-color: lightgrey;
@@ -19,5 +17,37 @@
     font-size: 150%;
     width: 50%;
     height: 10%;
+    background-color: lavender;
+}
+
+.PlayerButton {
+    display: inline-block;
+    margin-top: auto;
+    width: 15%;
+    height: 10%;
+    text-align: center;
+    font-size: 400%;
+    background-color: lavender;
+}
+
+.NumberDisplay {
+    display: inline-block;
+    margin-top: auto;
+    width: 15%;
+    height: 10%;
+    font-size: 400%;
+    background-color: lavender;
+}
+
+.MapSelectionButton {
+    display: block;
+    margin-top: auto;
+    margin-left: auto;
+    margin-right: auto;
+    width: 50%;
+    height: 10%;
+    text-align: centre;
+    font-size: 200%;
+    margin-top: 30%;
     background-color: lavender;
 }
