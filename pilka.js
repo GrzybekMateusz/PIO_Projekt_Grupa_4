@@ -1,48 +1,49 @@
 class Ball {
-  constructor(ball_id, friction, max_speed) {
+  constructor(canvas_id, friction, max_speed) {
     this.isMouseDown = false;
-    this.div = document.getElementById(ball_id);
+    this.canvas = document.getElementById(canvas_id);
+    this.ctx = this.canvas.getContext("2d");
     this.isMoving = false;
     this.move = false;
     this.friction = friction;
-    this.rect2 = this.div.getBoundingClientRect();
     this.max_speed = max_speed;
+    this.radius = 15;
 
-    this.x = this.rect2.top;
-    this.y = this.rect2.left;
+    this.x = this.canvas.width / 2;
+    this.y = this.canvas.height / 2;
 
-    this.div.addEventListener("mousedown", (event) => {
-      if (event.target === this.div) {
-        this.isMouseDown = true;
-      }
+    this.canvas.addEventListener("mousedown", (event) => {
+      this.isMouseDown = true;
     });
 
     document.addEventListener("mouseup", (event) => {
       if (this.isMouseDown) {
-        const distance = this.get_vectors(event.clientX, event.clientY);
-        const speedValues = this.speed_calculation(distance[0], distance[1]);
+        const distance = this.getVectors(event.clientX, event.clientY);
+        const speedValues = this.calculateSpeed(distance[0], distance[1]);
 
         this.move = true;
         this.moveBall(speedValues[0], speedValues[1]);
       }
       this.isMouseDown = false;
     });
+
+    this.drawBall(); 
   }
 
-  get_vectors(mouse_x, mouse_y) {
-    const rect = this.div.getBoundingClientRect();
+  getVectors(mouse_x, mouse_y) {
+    const rect = this.canvas.getBoundingClientRect();
 
     const centerX = rect.left + rect.width / 2;
     const centerY = rect.top + rect.height / 2;
 
-    let mouseX = mouse_x - centerX;
-    let mouseY = mouse_y - centerY;
+    let mouseX = mouse_x - this.x;
+    let mouseY = mouse_y - this.y;
 
-    if (Math.abs(mouseX) <= rect.width / 2) {
+    if (Math.abs(mouseX) <= this.radius / 2) {
       mouseX = 0;
     }
 
-    if (Math.abs(mouseY) <= rect.height / 2) {
+    if (Math.abs(mouseY) <= this.radius / 2) {
       mouseY = 0;
     }
 
@@ -54,40 +55,46 @@ class Ball {
     this.isMoving = true;
     let directionX = 1;
     let directionY = 1;
-    const update_cor = () => {
+
+    const updateCoordinates = () => {
       if (!this.move) return;
+
       this.x += speed_x * directionX;
       this.y += speed_y * directionY;
 
-      this.div.style.left = this.x + "px";
-      this.div.style.top = this.y + "px";
+      this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
+      this.drawBall();
 
-      if (this.x <= 0 || this.x >= window.innerWidth - this.div.offsetWidth) {
+      if (this.x - this.radius < 0 || this.x + this.radius > this.canvas.width ) {
         directionX *= -1;
       }
 
-      if (this.y <= 0 || this.y >= window.innerHeight - this.div.offsetHeight) {
+      if (this.y - this.radius < 0 || this.y + this.radius > this.canvas.height) {
         directionY *= -1;
       }
+
       speed_x *= this.friction;
       speed_y *= this.friction;
-      if (Math.abs(speed_y) < 0.5 && Math.abs(speed_x) < 0.5) {
+
+      if (Math.abs(speed_y) < 0.3 && Math.abs(speed_x) < 0.3) {
         this.move = false;
         this.isMoving = false;
       }
-      requestAnimationFrame(update_cor);
+
+      requestAnimationFrame(updateCoordinates);
     };
 
-    update_cor();
+    updateCoordinates();
   }
 
-  speed_calculation(speed_x, speed_y) {
-    speed_x /= -5;
-    speed_y /= -5;
+  calculateSpeed(speed_x, speed_y) {
+    speed_x /= 8;
+    speed_y /= 8;
 
     if (Math.abs(speed_x) < 1) {
       speed_x = 0;
     }
+
     if (Math.abs(speed_x) > this.max_speed) {
       if (speed_x < 0) {
         speed_x = -this.max_speed;
@@ -95,9 +102,11 @@ class Ball {
         speed_x = this.max_speed;
       }
     }
+
     if (Math.abs(speed_y) < 1) {
       speed_y = 0;
     }
+
     if (Math.abs(speed_y) > this.max_speed) {
       if (speed_y < 0) {
         speed_y = -this.max_speed;
@@ -108,6 +117,14 @@ class Ball {
 
     return [speed_x, speed_y];
   }
+
+  drawBall() {
+    this.ctx.beginPath();
+    this.ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
+    this.ctx.fillStyle = "red";
+    this.ctx.fill();
+    this.ctx.closePath();
+  }
 }
 
-const ball = new Ball("ball", 0.99, 20);
+const ball = new Ball("myCanvas", 0.99, 20);
