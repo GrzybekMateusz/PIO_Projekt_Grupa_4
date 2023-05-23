@@ -3,6 +3,18 @@
   margin:0;
 }
 
+#game_screen
+{
+  margin: auto;
+  padding: 0;
+  display: block;
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+}
+
 .MenuRectangleCentre {
     margin-top: 2.5%;
     margin-left: auto;
