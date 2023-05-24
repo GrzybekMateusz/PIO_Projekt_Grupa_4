@@ -26,6 +26,19 @@
     background-color: lightgrey;
 }
 
+#StatusMessage {
+    visibility: hidden;
+    margin-top: 2.5%;
+    margin-left: auto;
+    margin-right: auto;
+    margin-bottom: 2.5%;
+    width: 40%;
+    height: 10%;
+    padding-top: 2%;
+    text-align: center;
+    background-color: lightgrey;
+}
+
 .StartButton {
     display: block;
     margin-top: 60%;
