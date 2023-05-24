@@ -73,4 +73,25 @@
     margin-left: 5%;
     font-size: 100%;
     background-color: lavender;
+<<<<<<< Updated upstream
+=======
+}
+
+body {
+    background-image: url(background1.jpg);
+    background-repeat: no-repeat;
+    background-size: cover;
+    width: 100%;
+    height: 100%;
+}
+
+#game_screen_div {
+    position: fixed;
+    top : 0;
+    left : 0;
+    right : 0;
+    bottom : 0;
+    overflow : auto;
+    background : #2C2A2A;
+>>>>>>> Stashed changes
 }
