@@ -16,18 +16,17 @@ export default class GameScreen
       map_selection_button.addEventListener("click",async (e)=>{
         await this.#loadPage("MapSelectionMenu");
         const start_game_button=document.getElementById("start_game_button");
-        var status_button=document.getElementById('StatusMessage');
-        var error_message=null;
+        var status_message=document.getElementById('status_message');
         const map_upload=document.getElementById("map_upload");
         map_upload.addEventListener("change",async (e)=>{
           this.#golf_map=await this.#getMap(map_upload);
           if(this.#golf_map instanceof Error){
-             status_button.style.visibility='visible';
-             status_button.innerHTML = this.#golf_map.message;
+             status_message.style.visibility='visible';
+             status_message.innerHTML = this.#golf_map.message;
           }
           else{
-            status_button.style.visibility='visible';
-            status_button.innerHTML = 'Załadowano mapę';
+            status_message.style.visibility='visible';
+            status_message.innerHTML = 'Załadowano mapę';
           }
         });
         start_game_button.addEventListener("click",async (e)=>{
