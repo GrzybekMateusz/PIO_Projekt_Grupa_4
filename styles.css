@@ -15,26 +15,42 @@
   right: 0;
 }
 
-.MenuRectangleCentre {
-    margin-top: 2.5%;
-    margin-left: auto;
-    margin-right: auto;
-    width: 40%;
-    height: 90%;
-    padding-top: 2%;
-    text-align: center;
+#menu_bar {
+    position: absolute;
+    height: 100vh;
+    width: 40vw;
+    margin-left: 30vw;
+    margin-right: 30vw;
     background-color: lightgrey;
+    border-left: solid black;
+    border-right: solid black;
 }
 
-.StartButton {
-    display: block;
-    margin-top: 60%;
+#main_menu_header_bar {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 10vw;
     margin-left: auto;
     margin-right: auto;
-    font-size: 150%;
-    width: 50%;
-    height: 10%;
+    width: 30vw;
+    height: 20vh;
+    background-color: wheat;
+    border-radius: 1.5vw;
+    border: solid black;
+    font-size: 5vw;
+}
+
+#start_button {
+    display: block;
+    margin-top:30vh;
+    margin-left: auto;
+    margin-right: auto;
+    font-size: 3vw;
+    width: 20vw;
+    height: 10vh;
     background-color: lavender;
+    border: solid black;
 }
 
 .PlayerButton {
@@ -91,16 +107,13 @@ body {
     background-image: url(background1.jpg);
     background-repeat: no-repeat;
     background-size: cover;
-    width: 100%;
-    height: 100%;
+    width: 100vw;
+    height: 100vh;
 }
 
 #game_screen_div {
-    position: fixed;
-    top : 0;
-    left : 0;
-    right : 0;
-    bottom : 0;
-    overflow : auto;
+    position: relative;
+    width: 100vw;
+    height: 100vh;
     background : #2C2A2A;
 }
