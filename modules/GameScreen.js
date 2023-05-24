@@ -17,12 +17,13 @@ export default class GameScreen
         await this.#loadPage("MapSelectionMenu");
         const start_game_button=document.getElementById("start_game_button");
         var status_button=document.getElementById('StatusMessage');
+        var error_message=null;
         const map_upload=document.getElementById("map_upload");
         map_upload.addEventListener("change",async (e)=>{
           this.#golf_map=await this.#getMap(map_upload);
-          if(this.#golf_map==null){
+          if(this.#golf_map instanceof Error){
              status_button.style.visibility='visible';
-             status_button.innerHTML = 'ERROR - nie udało się załadować mapy';
+             status_button.innerHTML = this.#golf_map.message;
           }
           else{
             status_button.style.visibility='visible';
@@ -30,7 +31,7 @@ export default class GameScreen
           }
         });
         start_game_button.addEventListener("click",async (e)=>{
-          if(this.#golf_map!=null)
+          if(this.#golf_map!=null && this.#golf_map instanceof GolfMap)
           {
             await this.#loadPage("GameScreen");
             this.#canvas=document.getElementById("game_screen");
@@ -96,7 +97,7 @@ export default class GameScreen
     catch(e)
     {
       console.error(e);
-      return null;
+      return e;
     }
   }
 
