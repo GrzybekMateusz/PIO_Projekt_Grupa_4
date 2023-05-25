@@ -1,19 +1,17 @@
-<div class="MenuRectangleCentre">
-    <h1 style = "font-size: 250%; margin-top: 0%;">Wybierz mapę</h1>
-    <span class = "MapRectangle"
-        style = "margin-left: 0%;">
-        <img src = "pages/map_example.png"
-            style="width:100%; height:100%">
-        </img>
-    </span>
-    <span class = "MapRectangle"></span>
-    <hr style="border-width: 0;">
-    <span class = "MapRectangle"
-          style = "margin-left: 0%">
-    </span>
-    <span class = "MapRectangle"></span>
-    <hr style="border-width: 0";>
-    <button class = "MapButton"
-            style = "margin-left: -0.5%;">Rozpocznij grę</button>
-    <button id="add_map_button" class = "MapButton">Dodaj mapę</button>
+<div id = "menu_bar">
+    <div id = "map_menu_header_bar">Wybierz mapę</div>
+    <div id = "map_fields_container">
+        <div id = "map_field_filled"></div>
+        <div id = "map_field"></div>
+    </div>
+    
+    <div id = "buttons"> 
+        <button id = "start_game_button">Rozpocznij grę</button>
+        <label for="map_upload">
+            <div id = "map_button">Dodaj mapę</div>
+        </label>
+        <input style="display:none;" type="file" id="map_upload" accept="image/*"></input>
+    </div>
+    <div id="status_message"></div>
 </div>
+

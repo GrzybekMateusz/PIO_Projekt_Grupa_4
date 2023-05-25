@@ -3,74 +3,217 @@
   margin:0;
 }
 
-.MenuRectangleCentre {
-    margin-top: 2.5%;
-    margin-left: auto;
-    margin-right: auto;
-    width: 40%;
-    height: 90%;
-    padding-top: 2%;
-    text-align: center;
+#game_screen
+{
+  margin: auto;
+  padding: 0;
+  display: block;
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+}
+
+#menu_bar {
+    position: absolute;
+    height: 100vh;
+    width: 40vw;
+    margin-left: 30vw;
+    margin-right: 30vw;
     background-color: lightgrey;
+    border-left: solid black;
+    border-right: solid black;
 }
 
-.StartButton {
-    display: block;
-    margin-top: 60%;
+#main_menu_header_bar {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 10vw;
     margin-left: auto;
     margin-right: auto;
-    font-size: 150%;
-    width: 50%;
-    height: 10%;
-    background-color: lavender;
+    width: 30vw;
+    height: 20vh;
+    background-color: wheat;
+    border-radius: 1.5vw;
+    border: solid black;
+    font-size: 5vw;
 }
 
-.PlayerButton {
-    display: inline-block;
-    margin-top: auto;
-    width: 15%;
-    height: 10%;
-    text-align: center;
-    font-size: 400%;
+#start_button {
+    display: block;
+    margin-top:30vh;
+    margin-left: auto;
+    margin-right: auto;
+    font-size: 3vw;
+    width: 20vw;
+    height: 10vh;
     background-color: lavender;
+    border: solid black;
 }
 
-.NumberDisplay {
-    display: inline-block;
-    margin-top: auto;
-    width: 15%;
-    height: 10%;
-    font-size: 400%;
-    background-color: lavender;
+#player_menu_header_bar {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 10vh;
+    margin-left: auto;
+    margin-right: auto;
+    width: 30vw;
+    height: 10vh;
+    background-color: wheat;
+    border-radius: 1.5vw;
+    border: solid black;
+    font-size: 3vw;
 }
 
-.MapSelectionButton {
+#player_buttons {
+    display: flex;
+    align-items: center;
+    justify-content:center;
+    flex-direction: row;
+    gap: 1vw;
+    margin-top: 20vh;
+    width: 33vw;
+    height: 10vh;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+
+#player_button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 10vw;
+    height: 10vh;
+    font-size: 5vh;
+    background-color: lavender;
+    border: solid black;
+}
+
+#number_display {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 10vw;
+    height: 10vh;
+    font-size: 5vh;
+    background-color: lavender;
+    border: solid black;
+}
+
+#map_selection_button {
     display: block;
     margin-top: auto;
     margin-left: auto;
     margin-right: auto;
-    width: 50%;
-    height: 10%;
-    text-align: centre;
-    font-size: 200%;
-    margin-top: 30%;
+    font-size: 3vw;
+    width: 25vw;
+    height: 10vh;
+    margin-top: 15vh;
     background-color: lavender;
+    border: solid black;
 }
 
-.MapRectangle {
-    display: inline-block;
-    margin-top: 2.5%;
-    width: 30%;
-    height: 35%;
-    margin-inline: 5% 0;
+#map_menu_header_bar {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 5vh;
+    margin-left: auto;
+    margin-right: auto;
+    width: 30vw;
+    height: 5vh;
+    background-color: wheat;
+    border-radius: 1.5vw;
+    border: solid black;
+    font-size: 2.5vw;
+}
+
+#map_fields_container {
+    display: flex;
+    align-items: center;
+    justify-content:center;
+    flex-direction: row;
+    margin-top: 10vh;
+    width: 40vw;
+    height: 50vh;
+    gap: 2vw;
+}
+
+#map_field {
+    width: 15vw;
+    height: 50vh;
     background-color: grey;
 }
 
-.MapButton {
-    display: inline-block;
-    width: 25%;
-    height: 10%;
-    margin-left: 5%;
-    font-size: 100%;
+#map_field_filled{
+    width: 15vw;
+    height: 50vh;
+    background-image: url(map_example.png);
+    background-repeat: no-repeat;
+    background-size: cover;    
+}
+
+#buttons {
+    display: flex;
+    align-items: center;
+    justify-content:center;
+    flex-direction: row;
+    gap: 2vw;
+    margin-top: 10vh;
+}
+
+#start_game_button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 15vw;
+    height: 5vh;
+    font-size: 1.5vw;
     background-color: lavender;
+    border: solid black;
+}
+
+#map_button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 15vw;
+    height: 4vh;
+    font-size: 1.5vw;
+    background-color: lavender;
+    border: solid black;
+}
+
+body {
+    background-image: url(menu_background.jpg);
+    background-repeat: no-repeat;
+    background-size: cover;
+    width: 100vw;
+    height: 100vh;
+}
+
+#game_screen_div {
+    position: relative;
+    width: 100vw;
+    height: 100vh;
+    background : #2C2A2A;
+}
+
+#status_message {
+    visibility: hidden;
+    text-align: center;
+    height: 5%;
+    width: 60%;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 2vw;
+    background-color: lightgrey;
+    border-left: solid black;
+    border-right: solid black;
+    border-top: solid black;
+    border-bottom: solid black;
 }
