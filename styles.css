@@ -202,3 +202,18 @@ body {
     height: 100vh;
     background : #2C2A2A;
 }
+
+#status_message {
+    visibility: hidden;
+    text-align: center;
+    height: 5%;
+    width: 60%;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 2vw;
+    background-color: lightgrey;
+    border-left: solid black;
+    border-right: solid black;
+    border-top: solid black;
+    border-bottom: solid black;
+}

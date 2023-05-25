@@ -16,12 +16,21 @@ export default class GameScreen
       map_selection_button.addEventListener("click",async (e)=>{
         await this.#loadPage("MapSelectionMenu");
         const start_game_button=document.getElementById("start_game_button");
+        var status_message=document.getElementById('status_message');
         const map_upload=document.getElementById("map_upload");
         map_upload.addEventListener("change",async (e)=>{
           this.#golf_map=await this.#getMap(map_upload);
+          if(this.#golf_map instanceof Error){
+             status_message.style.visibility='visible';
+             status_message.innerHTML = this.#golf_map.message;
+          }
+          else{
+            status_message.style.visibility='visible';
+            status_message.innerHTML = 'Załadowano mapę';
+          }
         });
         start_game_button.addEventListener("click",async (e)=>{
-          if(this.#golf_map!=null)
+          if(this.#golf_map!=null && this.#golf_map instanceof GolfMap)
           {
             await this.#loadPage("GameScreen");
             this.#canvas=document.getElementById("game_screen");
@@ -87,6 +96,7 @@ export default class GameScreen
     catch(e)
     {
       console.error(e);
+      return e;
     }
   }
 
