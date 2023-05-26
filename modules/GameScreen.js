@@ -1,11 +1,13 @@
 import GolfMap from "./GolfMap.js"
+import Ball from "./Ball.js"
 
 export default class GameScreen
 {
   #canvas_scale;
   #canvas;
   #ctx;
-  #golf_map
+  #golf_map;
+  #ball;
 
   constructor()
   {
@@ -35,9 +37,18 @@ export default class GameScreen
             await this.#loadPage("GameScreen");
             this.#canvas=document.getElementById("game_screen");
             this.#ctx=this.#canvas.getContext("2d");
+            this.#canvas_scale=Math.min(innerHeight/(this.#golf_map.height*10),innerWidth/(this.#golf_map.width*10));
+            this.#canvas.width=this.#golf_map.width*10*this.#canvas_scale;
+            this.#canvas.height=this.#golf_map.height*10*this.#canvas_scale;
+            this.#ctx.scale(this.#canvas_scale,this.#canvas_scale);
+            this.#ball= new Ball(this.#canvas,  0.95, 15, this.#ctx,this.#drawMap.bind(this));
+            this.#ball.getScale(this.#canvas_scale);
             this.#drawMap();
             addEventListener("resize",(e)=>{
               this.#drawMap();
+              this.#ball.getScale(this.#canvas_scale);
+              this.#ball.rect = this.#canvas.getBoundingClientRect();;
+
             });
           }
         });
@@ -73,12 +84,21 @@ export default class GameScreen
           this.#ctx.moveTo(x*10+2,y*10+5);
           this.#ctx.lineTo(x*10+8,y*10+5);
           this.#ctx.lineTo(x*10+5,y*10+10);
-          this.#ctx.closePath();
+          //this.#ctx.closePath();
           this.#ctx.fillStyle="white";
           this.#ctx.fill();
         }
       }
     }
+      this.#drawBall();
+  }
+  #drawBall(){ 
+
+    this.#ctx.beginPath();
+    this.#ctx.arc(this.#ball.x, this.#ball.y, this.#ball.radius, 0, 2 * Math.PI);
+    this.#ctx.fillStyle = "red";
+    this.#ctx.fill();
+    //this.ctx.closePath();
   }
 
   async #getMap(input)
