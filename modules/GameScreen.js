@@ -10,7 +10,9 @@ export default class GameScreen
   constructor()
   {
     const start_button=document.getElementById("start_button");
-    start_button.addEventListener("click", this.#goToPlayerSelection());
+    start_button.addEventListener("click",async (e)=>{
+       this.#loadPlayersMenu();
+    });
   }
 
   //część do przeniesienia do kodu renderującego
@@ -74,18 +76,29 @@ export default class GameScreen
     document.body.innerHTML=html;
   }
 
-  async #loadMap() {
-    if(this.#golf_map!=null && this.#golf_map instanceof GolfMap)
-    {
-      await this.#loadPage("GameScreen");
-      this.#canvas=document.getElementById("game_screen");
-      this.#ctx=this.#canvas.getContext("2d");
-      this.#drawMap();
-      addEventListener("resize", this.#drawMap());
-    }
+  async #loadPlayersMenu() {
+    await this.#loadPage("PlayersMenu");
+    const map_selection_button=document.getElementById("map_selection_button");
+    map_selection_button.addEventListener("click",async (e)=>{
+      this.#loadMapSelectionMenu()
+    });
   }
 
-  async #mapChangeReaction() {
+
+  async #loadMapSelectionMenu() {
+    await this.#loadPage("MapSelectionMenu");
+    const start_game_button=document.getElementById("start_game_button");
+    var status_message=document.getElementById('status_message');
+    const map_upload=document.getElementById("map_upload");
+    map_upload.addEventListener("change",async (e)=>{
+      this.#loadMapLoadedPrompt();
+    });
+    start_game_button.addEventListener("click",async (e)=>{
+      this.#loadGameScreen();
+    });
+  }
+
+  async #loadMapLoadedPrompt() {
     this.#golf_map=await this.#getMap(map_upload);
     if(this.#golf_map instanceof Error){
        status_message.style.visibility='visible';
@@ -97,18 +110,16 @@ export default class GameScreen
     }
   }
 
-  async #goToMapSelection() {
-    await this.#loadPage("MapSelectionMenu");
-    const start_game_button=document.getElementById("start_game_button");
-    var status_message=document.getElementById('status_message');
-    const map_upload=document.getElementById("map_upload");
-    map_upload.addEventListener("change", this.#mapChangeReaction());
-    start_game_button.addEventListener("click", this.#loadMap());
-  }
-
-  async #goToPlayerSelection() {
-    await this.#loadPage("PlayersMenu");
-    const map_selection_button=document.getElementById("map_selection_button");
-    map_selection_button.addEventListener("click", this.#goToMapSelection());
+  async #loadGameScreen() {
+    if(this.#golf_map!=null && this.#golf_map instanceof GolfMap)
+    {
+      await this.#loadPage("GameScreen");
+      this.#canvas=document.getElementById("game_screen");
+      this.#ctx=this.#canvas.getContext("2d");
+      this.#drawMap();
+      addEventListener("resize",(e)=>{
+        this.#drawMap();
+      });
+    }
   }
 }
