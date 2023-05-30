@@ -133,28 +133,35 @@
 }
 
 #map_fields_container {
-    display: flex;
-    align-items: center;
-    justify-content:center;
-    flex-direction: row;
+    overflow-x: hidden;
+    overflow-y: auto;
     margin-top: 10vh;
     width: 40vw;
     height: 50vh;
-    gap: 2vw;
 }
 
-#map_field {
-    width: 15vw;
-    height: 50vh;
-    background-color: grey;
+.map_field {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-left: 1vw;
+    margin-right: 1vw;
+    margin-top: 1vh;
+    margin-bottom: 1vh;
+    padding: 1vh;
+    background-color: wheat;
+    border-radius: 1.5vw;
+    border: solid black;
 }
 
-#map_field_filled{
-    width: 15vw;
-    height: 50vh;
-    background-image: url(map_example.png);
-    background-repeat: no-repeat;
-    background-size: cover;    
+.map_field_remove {
+  padding: 1vh;
+  border-radius: 1.5vw;
+  background-color: red;
+  border: solid black;
+}
+
+.map_field_name {
 }
 
 #buttons {
