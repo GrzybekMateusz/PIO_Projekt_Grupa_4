@@ -88,6 +88,7 @@ export default class GameScreen
   async #loadMapSelectionMenu() {
     await this.#loadPage("MapSelectionMenu");
     const start_game_button=document.getElementById("start_game_button");
+    const go_back_button_maps = document.getElementById("go_back_button_maps");
     var status_message=document.getElementById('status_message');
     const map_upload=document.getElementById("map_upload");
     map_upload.addEventListener("change",async (e)=>{
@@ -95,6 +96,9 @@ export default class GameScreen
     });
     start_game_button.addEventListener("click",async (e)=>{
       this.#loadGameScreen();
+    });
+    go_back_button_maps.addEventListener("click", async(e)=>{
+      this.#loadPlayersMenu();
     });
   }
 
@@ -122,4 +126,5 @@ export default class GameScreen
       });
     }
   }
+  
 }
