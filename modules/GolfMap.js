@@ -11,7 +11,17 @@ export default class GolfMap
   #height;
   #map=[];
 
-  constructor(bitmap)
+  constructor(width, height, map)
+  {
+    if(width!=null&&height!=null&&map!=null)
+    {
+      this.#width=width;
+      this.#height=height;
+      this.#map=map;
+    }
+  }
+
+  fromBitmap(bitmap)
   {
     this.#width=bitmap.width;
     this.#height=bitmap.height;
@@ -54,7 +64,18 @@ export default class GolfMap
     if(!hole_found)
       throw new Error("Map must contain a hole!");
   }
-  
+
+  serialize()
+  {
+    return JSON.stringify({'width':this.#width,'height':this.#height,'map':this.#map});
+  }
+
+  static deserialize(json_string)
+  {
+    const map=JSON.parse(json_string);
+    return new GolfMap(map.width,map.height,map.map);
+  }
+
   get width()
   {
     return this.#width;
