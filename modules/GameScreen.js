@@ -1,5 +1,6 @@
 import GolfMap from "./GolfMap.js"
 import Ball from "./Ball.js"
+import Obstacle from "./Obstacle.js";
 
 export default class GameScreen
 {
@@ -8,9 +9,11 @@ export default class GameScreen
   #ctx;
   #golf_map;
   #ball;
+  #obstacles;
 
   constructor()
   {
+    this.#obstacles=[];
     const start_button=document.getElementById("start_button");
     start_button.addEventListener("click",async (e)=>{
       await this.#loadPage("PlayersMenu");
@@ -41,7 +44,8 @@ export default class GameScreen
             this.#canvas.width=this.#golf_map.width*10*this.#canvas_scale;
             this.#canvas.height=this.#golf_map.height*10*this.#canvas_scale;
             this.#ctx.scale(this.#canvas_scale,this.#canvas_scale);
-            this.#ball= new Ball(this.#canvas,  0.95, 15, this.#ctx,this.#drawMap.bind(this));
+            this.#getObstacles();
+            this.#ball= new Ball(this.#canvas,  0.95, 15, this.#ctx,this.#drawMap.bind(this),this.#obstacles);
             this.#ball.getScale(this.#canvas_scale);
             this.#drawMap();
             addEventListener("resize",(e)=>{
@@ -54,6 +58,18 @@ export default class GameScreen
         });
       });
     });
+  }
+
+  #getObstacles(){
+    for(let y=0;y<this.#golf_map.height;++y)
+    {
+      for(let x=0;x<this.#golf_map.width;++x)
+      {
+        if(this.#golf_map.map[y][x]==GolfMap.ObjectType.Wall){
+          this.#obstacles.push(new Obstacle(x*10,y*10,10,10,1));
+        }
+      }
+    }
   }
 
   //część do przeniesienia do kodu renderującego

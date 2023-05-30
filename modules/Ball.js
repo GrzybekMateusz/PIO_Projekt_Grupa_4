@@ -1,5 +1,5 @@
 export default class Ball {
-    constructor(canvas, friction, max_speed, ctx_ball, drawMap) {
+    constructor(canvas, friction, max_speed, ctx_ball, drawMap, obstacles) {
       this.isMouseDown = false;
       this.canvas = canvas;
       this.ctx = ctx_ball;
@@ -11,6 +11,7 @@ export default class Ball {
       this.drawMap = drawMap;
       this.scale = 1;
       this.rect = canvas.getBoundingClientRect();
+      this.obstacles=obstacles;
   
       this.x = 30;
       this.y = 30;
@@ -58,6 +59,23 @@ export default class Ball {
   
       return [mouseX, mouseY];
     }
+
+    intersects(rect){
+
+    var circleDistancex = Math.abs(this.x - rect.x);
+    var circleDistancey = Math.abs(this.y - rect.y);
+
+    if (circleDistancex > (rect.width/2 + this.radius)) { return false; }
+    if (circleDistancey > (rect.height/2 + this.radius)) { return false; }
+
+    if (circleDistancex <= (rect.width/2)) { return 11; } 
+    if (circleDistancey <= (rect.height/2)) { return 22; }
+
+    var cornerDistance_sq = (circleDistancex - rect.width/2)^2 +
+                         (circleDistancey - rect.height/2)^2;
+
+    return (cornerDistance_sq <= (this.r^2));
+}
   
     moveBall(speed_x, speed_y) {
       if (this.isMoving) return;
@@ -67,10 +85,19 @@ export default class Ball {
   
       const updateCoordinates = () => {
         if (!this.move) return;
+
+        for(var i in this.obstacles){
+          var check = this.intersects(this.obstacles[i]);
+          
+          if(check == 11)
+          directionX *= -1;
+          else if(check == 22)
+          directionY *= -1;
+       }
   
         this.x += speed_x * directionX;
         this.y += speed_y * directionY;
-  
+
         //this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
         this.drawMap();
   
