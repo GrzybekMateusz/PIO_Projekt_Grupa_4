@@ -79,8 +79,12 @@ export default class GameScreen
   async #loadPlayersMenu() {
     await this.#loadPage("PlayersMenu");
     const map_selection_button=document.getElementById("map_selection_button");
+    const go_back_button_players=document.getElementById("go_back_button_players");
     map_selection_button.addEventListener("click",async (e)=>{
       this.#loadMapSelectionMenu()
+    });
+    go_back_button_players.addEventListener("click", async(e)=>{
+      this.#loadMainMenuScreen();
     });
   }
 
@@ -125,6 +129,14 @@ export default class GameScreen
         this.#drawMap();
       });
     }
+  }
+
+  async #loadMainMenuScreen() {
+    await this.#loadPage("MainMenu");
+    const start_button = document.getElementById("start_button");
+    start_button.addEventListener("click", (e)=>{
+      this.#loadPlayersMenu();
+    })
   }
   
 }
