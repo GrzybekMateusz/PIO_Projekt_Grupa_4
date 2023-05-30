@@ -1,4 +1,5 @@
 export default class Ball {
+   
     constructor(canvas, friction, max_speed, ctx_ball, drawMap, obstacles) {
       this.isMouseDown = false;
       this.canvas = canvas;
@@ -12,6 +13,9 @@ export default class Ball {
       this.scale = 1;
       this.rect = canvas.getBoundingClientRect();
       this.obstacles=obstacles;
+      this.inWall=false;
+      this.lastX=30;
+      this.lastY=30
   
       this.x = 30;
       this.y = 30;
@@ -62,19 +66,20 @@ export default class Ball {
 
     intersects(rect){
 
-    var circleDistancex = Math.abs(this.x - rect.x);
-    var circleDistancey = Math.abs(this.y - rect.y);
+    var circleDistancex = Math.abs(this.x - rect.x-rect.width/2);
+    var circleDistancey = Math.abs(this.y - rect.y-rect.height/2);
 
     if (circleDistancex > (rect.width/2 + this.radius)) { return false; }
     if (circleDistancey > (rect.height/2 + this.radius)) { return false; }
 
-    if (circleDistancex <= (rect.width/2)) { return 11; } 
-    if (circleDistancey <= (rect.height/2)) { return 22; }
+    if (circleDistancex <= (rect.width/2)) { return 22; } 
+    if (circleDistancey <= (rect.height/2)) { return 11; }
 
-    var cornerDistance_sq = (circleDistancex - rect.width/2)^2 +
-                         (circleDistancey - rect.height/2)^2;
+    var cornerDistanceSq = Math.sqrt(circleDistancex - rect.width/2) +
+    Math.sqrt(circleDistancey - rect.height/2);
 
-    return (cornerDistance_sq <= (this.r^2));
+    if(cornerDistanceSq <= (Math.sqrt(this.radius))) return 11;
+
 }
   
     moveBall(speed_x, speed_y) {
@@ -88,11 +93,24 @@ export default class Ball {
 
         for(var i in this.obstacles){
           var check = this.intersects(this.obstacles[i]);
-          
-          if(check == 11)
+        
+          if(check == 11 && this.inWall==false){
           directionX *= -1;
-          else if(check == 22)
+          this.x=this.lastX;
+          this.y=this.lastY;
+          this.inWall=true;
+          }
+          else if(check == 22 && this.inWall==false){
           directionY *= -1;
+          this.x=this.lastX;
+          this.y=this.lastY;
+          this.inWall=true;
+          }
+          else if(check!=11 && check!=22){
+          this.lastX=this.x;
+          this.lastY=this.y;
+          this.inWall=false;
+          }
        }
   
         this.x += speed_x * directionX;
@@ -103,10 +121,14 @@ export default class Ball {
   
         if (this.x - this.radius < 0 || this.x + this.radius > this.canvas.width/this.scale ) {
           directionX *= -1;
+          this.x=this.lastX;
+          this.y=this.lastY;
         }
   
         if (this.y - this.radius < 0 || this.y + this.radius > this.canvas.height/this.scale) {
           directionY *= -1;
+          this.x=this.lastX;
+          this.y=this.lastY;
         }
   
         speed_x *= this.friction;
