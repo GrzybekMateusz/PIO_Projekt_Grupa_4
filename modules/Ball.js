@@ -94,22 +94,22 @@ export default class Ball {
         for(var i in this.obstacles){
           var check = this.intersects(this.obstacles[i]);
         
-          if(check == 11 && this.inWall==false){
+          if(check == 11 /*&&  this.inWall==false*/){
           directionX *= -1;
           this.x=this.lastX;
           this.y=this.lastY;
-          this.inWall=true;
+          //this.inWall=true;
           }
-          else if(check == 22 && this.inWall==false){
+          else if(check == 22 /*&& this.inWall==false*/){
           directionY *= -1;
           this.x=this.lastX;
           this.y=this.lastY;
-          this.inWall=true;
+          //this.inWall=true;
           }
           else if(check!=11 && check!=22){
           this.lastX=this.x;
           this.lastY=this.y;
-          this.inWall=false;
+          //this.inWall=false;
           }
        }
   
