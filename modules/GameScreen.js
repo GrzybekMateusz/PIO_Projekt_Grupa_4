@@ -21,17 +21,19 @@ export default class GameScreen
       map_selection_button.addEventListener("click",async (e)=>{
         await this.#loadPage("MapSelectionMenu");
         const start_game_button=document.getElementById("start_game_button");
-        var status_message=document.getElementById('status_message');
+        const map_fields_container=document.getElementById("map_fields_container");
+        const status_message=document.getElementById('status_message');
         const map_upload=document.getElementById("map_upload");
+        this.#showMapList(map_fields_container);
         map_upload.addEventListener("change",async (e)=>{
-          this.#golf_map=await this.#getMap(map_upload);
+          await this.#addMap(map_upload,map_fields_container);
           if(this.#golf_map instanceof Error){
              status_message.style.visibility='visible';
              status_message.innerHTML = this.#golf_map.message;
           }
           else{
             status_message.style.visibility='visible';
-            status_message.innerHTML = 'Załadowano mapę';
+            status_message.innerHTML = 'Dodano mapę';
           }
         });
         start_game_button.addEventListener("click",async (e)=>{
@@ -117,7 +119,7 @@ export default class GameScreen
     //this.ctx.closePath();
   }
 
-  async #getMap(input)
+  async #addMap(input,mapList)
   {
     try
     {
@@ -126,14 +128,50 @@ export default class GameScreen
       const file=input.files[0];
       if(!file.type.startsWith("image/"))
         throw new Error("Invalid file type!");
+      const map_name=file.name.substring(0,file.name.lastIndexOf('.'));
+      const map_list=Object.keys(localStorage);
+      if(map_list.includes("map_"+map_name))
+        throw new Error("Map named \""+map_name+"\" ready in library!");
       const bitmap=await createImageBitmap(file);
-      return new GolfMap(bitmap);
+      const map=new GolfMap(null,null,null);
+      map.fromBitmap(bitmap);
+      localStorage.setItem("map_"+map_name,map.serialize());
+      this.#showMapList(mapList);
     }
     catch(e)
     {
       console.error(e);
       return e;
     }
+  }
+
+  #showMapList(parentBox)
+  {
+    parentBox.innerHTML="";
+    const map_list=Object.keys(localStorage);
+    if(map_list.length==0)
+      parentBox.innerHTML="Brak wczytanych map";
+    else
+      map_list.forEach((map_name)=>{
+        const field=document.createElement("div");
+        field.className="map_field";
+        const field_name=document.createElement("div");
+        field_name.innerHTML=map_name.substr(4);
+        field_name.className="map_field_name";
+        const field_remove=document.createElement("div");
+        field_remove.innerHTML="Remove";
+        field_remove.className="map_field_remove";
+        field.appendChild(field_name);
+        field.appendChild(field_remove);
+        parentBox.appendChild(field);
+        field.addEventListener("click",()=>{
+          this.#golf_map=GolfMap.deserialize(localStorage.getItem(map_name));
+        });
+        field_remove.addEventListener("click",()=>{
+          localStorage.removeItem(map_name);
+          this.#showMapList(parentBox);
+        });
+      });
   }
 
   async #loadPage(page)
