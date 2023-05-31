@@ -1,18 +1,35 @@
 import GolfMap from "./GolfMap.js"
+import Ball from "./Ball.js"
+import Obstacle from "./Obstacle.js";
 
 export default class GameScreen
 {
   #canvas_scale;
   #canvas;
   #ctx;
-  #golf_map
+  #golf_map;
+  #ball;
+  #obstacles;
 
   constructor()
   {
+    this.#obstacles=[];
     const start_button=document.getElementById("start_button");
     start_button.addEventListener("click",async (e)=>{
        this.#loadPlayersMenu();
     });
+  }
+
+  #getObstacles(){
+    for(let y=0;y<this.#golf_map.height;++y)
+    {
+      for(let x=0;x<this.#golf_map.width;++x)
+      {
+        if(this.#golf_map.map[y][x]==GolfMap.ObjectType.Wall){
+          this.#obstacles.push(new Obstacle(x*10,y*10,10,10,1));
+        }
+      }
+    }
   }
 
   //część do przeniesienia do kodu renderującego
@@ -43,12 +60,21 @@ export default class GameScreen
           this.#ctx.moveTo(x*10+2,y*10+5);
           this.#ctx.lineTo(x*10+8,y*10+5);
           this.#ctx.lineTo(x*10+5,y*10+10);
-          this.#ctx.closePath();
+          //this.#ctx.closePath();
           this.#ctx.fillStyle="white";
           this.#ctx.fill();
         }
       }
     }
+      this.#drawBall();
+  }
+  #drawBall(){ 
+
+    this.#ctx.beginPath();
+    this.#ctx.arc(this.#ball.x, this.#ball.y, this.#ball.radius, 0, 2 * Math.PI);
+    this.#ctx.fillStyle = "red";
+    this.#ctx.fill();
+    //this.ctx.closePath();
   }
 
   async #addMap(input,mapList)
@@ -162,9 +188,19 @@ export default class GameScreen
       await this.#loadPage("GameScreen");
       this.#canvas=document.getElementById("game_screen");
       this.#ctx=this.#canvas.getContext("2d");
+      this.#canvas_scale=Math.min(innerHeight/(this.#golf_map.height*10),innerWidth/(this.#golf_map.width*10));
+      this.#canvas.width=this.#golf_map.width*10*this.#canvas_scale;
+      this.#canvas.height=this.#golf_map.height*10*this.#canvas_scale;
+      this.#ctx.scale(this.#canvas_scale,this.#canvas_scale);
+      this.#getObstacles();
+      this.#ball= new Ball(this.#canvas,  0.95, 15, this.#ctx,this.#drawMap.bind(this),this.#obstacles);
+      this.#ball.getScale(this.#canvas_scale);
+      console.log(this.#ball);
       this.#drawMap();
       addEventListener("resize",(e)=>{
         this.#drawMap();
+        this.#ball.getScale(this.#canvas_scale);
+        this.#ball.rect = this.#canvas.getBoundingClientRect();;
       });
     }
   }
