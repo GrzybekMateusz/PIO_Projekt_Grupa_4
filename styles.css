@@ -121,7 +121,7 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    margin-top: 5vh;
+    margin-top: 2vh;
     margin-left: auto;
     margin-right: auto;
     width: 30vw;
@@ -159,9 +159,6 @@
   border-radius: 1.5vw;
   background-color: red;
   border: solid black;
-}
-
-.map_field_name {
 }
 
 #buttons {
@@ -219,8 +216,18 @@ body {
     margin-right: auto;
     margin-top: 2vw;
     background-color: lightgrey;
-    border-left: solid black;
-    border-right: solid black;
-    border-top: solid black;
-    border-bottom: solid black;
+    border: solid black;
+}
+
+.go_back_button{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 1vh;
+    margin-left: 1vw;
+    height: 5vh;
+    width: 5vw;
+    font-size: 2.5vh;
+    background-color: wheat;
+    border: solid black;
 }

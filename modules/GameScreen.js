@@ -11,39 +11,7 @@ export default class GameScreen
   {
     const start_button=document.getElementById("start_button");
     start_button.addEventListener("click",async (e)=>{
-      await this.#loadPage("PlayersMenu");
-      const map_selection_button=document.getElementById("map_selection_button");
-      map_selection_button.addEventListener("click",async (e)=>{
-        await this.#loadPage("MapSelectionMenu");
-        const start_game_button=document.getElementById("start_game_button");
-        const map_fields_container=document.getElementById("map_fields_container");
-        const status_message=document.getElementById('status_message');
-        const map_upload=document.getElementById("map_upload");
-        this.#showMapList(map_fields_container);
-        map_upload.addEventListener("change",async (e)=>{
-          await this.#addMap(map_upload,map_fields_container);
-          if(this.#golf_map instanceof Error){
-             status_message.style.visibility='visible';
-             status_message.innerHTML = this.#golf_map.message;
-          }
-          else{
-            status_message.style.visibility='visible';
-            status_message.innerHTML = 'Dodano mapę';
-          }
-        });
-        start_game_button.addEventListener("click",async (e)=>{
-          if(this.#golf_map!=null && this.#golf_map instanceof GolfMap)
-          {
-            await this.#loadPage("GameScreen");
-            this.#canvas=document.getElementById("game_screen");
-            this.#ctx=this.#canvas.getContext("2d");
-            this.#drawMap();
-            addEventListener("resize",(e)=>{
-              this.#drawMap();
-            });
-          }
-        });
-      });
+       this.#loadPlayersMenu();
     });
   }
 
@@ -143,4 +111,70 @@ export default class GameScreen
     const html=await fetch("pages/"+page+".html").then((data)=>data.text());
     document.body.innerHTML=html;
   }
+
+  async #loadPlayersMenu() {
+    await this.#loadPage("PlayersMenu");
+    const map_selection_button=document.getElementById("map_selection_button");
+    const go_back_button_players=document.getElementById("go_back_button_players");
+    map_selection_button.addEventListener("click",async (e)=>{
+      this.#loadMapSelectionMenu()
+    });
+    go_back_button_players.addEventListener("click", async(e)=>{
+      this.#loadMainMenuScreen();
+    });
+  }
+
+
+  async #loadMapSelectionMenu() {
+    await this.#loadPage("MapSelectionMenu");
+    const start_game_button=document.getElementById("start_game_button");
+    const map_fields_container=document.getElementById("map_fields_container");
+    const go_back_button_maps = document.getElementById("go_back_button_maps");
+    var status_message=document.getElementById('status_message');
+    const map_upload=document.getElementById("map_upload");
+    this.#showMapList(map_fields_container);
+    map_upload.addEventListener("change",async (e)=>{
+      this.#loadMapLoadedPrompt(map_upload, map_fields_container);
+    });
+    start_game_button.addEventListener("click",async (e)=>{
+      this.#loadGameScreen();
+    });
+    go_back_button_maps.addEventListener("click", async(e)=>{
+      this.#loadPlayersMenu();
+    });
+  }
+
+  async #loadMapLoadedPrompt(map_upload, map_fields_container) {
+    this.#golf_map=await this.#addMap(map_upload, map_fields_container);
+    if(this.#golf_map instanceof Error){
+       status_message.style.visibility='visible';
+       status_message.innerHTML = this.#golf_map.message;
+    }
+    else{
+      status_message.style.visibility='visible';
+      status_message.innerHTML = 'Załadowano mapę';
+    }
+  }
+
+  async #loadGameScreen() {
+    if(this.#golf_map!=null && this.#golf_map instanceof GolfMap)
+    {
+      await this.#loadPage("GameScreen");
+      this.#canvas=document.getElementById("game_screen");
+      this.#ctx=this.#canvas.getContext("2d");
+      this.#drawMap();
+      addEventListener("resize",(e)=>{
+        this.#drawMap();
+      });
+    }
+  }
+
+  async #loadMainMenuScreen() {
+    await this.#loadPage("MainMenu");
+    const start_button = document.getElementById("start_button");
+    start_button.addEventListener("click", (e)=>{
+      this.#loadPlayersMenu();
+    })
+  }
+  
 }
