@@ -21,14 +21,15 @@ export default class GolfBall
   move()
   {
     const ballRadius=3;
-    let xs=Math.floor(this.#xSpeed);
-    let ys=Math.floor(this.#ySpeed);
+    let xs=Math.round(this.#xSpeed);
+    let ys=Math.round(this.#ySpeed);
     if(xs==0&&ys==0)
       return;
     let tpos=new Point(this.#pos.x,this.#pos.y);
     while(xs!=0||ys!=0)
     {
-      /*const t=Math.floor(tpos.y-ballRadius);
+      console.log("xs: "+xs+"ys: "+ys);
+      const t=Math.floor(tpos.y-ballRadius);
       const b=Math.floor(tpos.y+ballRadius);
       const l=Math.floor(tpos.x-ballRadius);
       const r=Math.floor(tpos.x+ballRadius);
@@ -41,7 +42,10 @@ export default class GolfBall
         ||(r!=this.#mapData.width*10
           &&this.#mapData.typeAtPoint(new Point(r,t-1))==GolfMap.ObjectType.Wall
           &&this.#mapData.typeAtPoint(new Point(r,b))==GolfMap.ObjectType.Wall))
+          {
             this.#yDirection*=-1;
+            tpos.y+=this.#yDirection;
+          }
       }
       if(b%10==0)
       {
@@ -52,7 +56,10 @@ export default class GolfBall
         ||(r!=this.#mapData.width*10
           &&this.#mapData.typeAtPoint(new Point(r,b))==GolfMap.ObjectType.Wall
           &&this.#mapData.typeAtPoint(new Point(r,t))!=GolfMap.ObjectType.Wall))
+          {
             this.#yDirection*=-1;
+            tpos.y+=this.#yDirection;
+          }
       }
       if(l%10==0)
       {
@@ -63,7 +70,10 @@ export default class GolfBall
         ||(b!=this.#mapData.height*10
           &&this.#mapData.typeAtPoint(new Point(l-1,b))==GolfMap.ObjectType.Wall
           &&this.#mapData.typeAtPoint(new Point(r,b))!=GolfMap.ObjectType.Wall))
+          {
             this.#xDirection*=-1;
+            tpos.x+=this.#xDirection;
+          }
       }
       if(r%10==0)
       {
@@ -74,9 +84,12 @@ export default class GolfBall
         ||(b!=this.#mapData.height*10
           &&this.#mapData.typeAtPoint(new Point(r,b))==GolfMap.ObjectType.Wall
           &&this.#mapData.typeAtPoint(new Point(l,b))!=GolfMap.ObjectType.Wall))
-            this.#xDirection*=-1;
-      }*/
-      if(tpos.x-ballRadius<=0||tpos.x+ballRadius>=this.#mapData.width*10)
+        {
+          this.#xDirection*=-1;
+          tpos.x+=this.#xDirection;
+        }
+      }
+      /*if(tpos.x-ballRadius<=0||tpos.x+ballRadius>=this.#mapData.width*10)
           this.#xDirection*=-1;
       if(tpos.y-ballRadius<=0||tpos.y+ballRadius>=this.#mapData.height*10)
           this.#yDirection*=-1;
@@ -89,7 +102,7 @@ export default class GolfBall
         else if(check == 22){
           this.#yDirection*=-1;
         }
-      }
+      }*/
       if(xs!=0)
       {
         tpos.x+=this.#xDirection;
@@ -103,7 +116,7 @@ export default class GolfBall
     }
     this.#pos.x=tpos.x;
     this.#pos.y=tpos.y;
-    console.log("x: "+this.#pos.x+" y:"+this.#pos.y);
+    //console.log("x: "+this.#pos.x+" y:"+this.#pos.y);
     this.#xSpeed*=0.99;
     this.#ySpeed*=0.99;
   }
