@@ -87,7 +87,7 @@ export default class GameScreen
 
   #isInsideBall(x, y, ball) {
     const distance = Math.sqrt((x - ball.pos.x) ** 2 + (y - ball.pos.y) ** 2);
-    return distance <= 1.5 *this.#canvas_scale;
+    return distance <= 3 *this.#canvas_scale;
   }
   
   async #addMap(input,mapList)
@@ -215,10 +215,11 @@ export default class GameScreen
         }
       });
       document.addEventListener("mouseup", (event) => {
-        const ballRadius=1.5;
+        const ballRadius=3;
         if (this.#isMouseDown) {
           const mouseX = (event.offsetX + ballRadius)/this.#canvas_scale;
           const mouseY = (event.offsetY+ ballRadius)/this.#canvas_scale;
+          console.log("x: "+mouseX+"y: "+mouseY);
           this.#ball.setSpeed(mouseX,mouseY);
         }
         this.#isMouseDown = false;
