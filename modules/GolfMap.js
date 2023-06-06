@@ -107,4 +107,14 @@ export default class GolfMap
           return new Point(x*10+5,y*10+5);
     }
   }
+
+  get endPoint()
+  {
+    for(let y=0;y<this.#height;++y)
+    {
+      for(let x=0;x<this.#width;++x)
+        if(this.#map[y][x]==GolfMap.ObjectType.Hole)
+          return new Point(x*10+5,y*10+5);
+    }
+  }
 }

@@ -9,6 +9,7 @@ export default class GameScreen
   #ctx;
   #golf_map;
   #ball;
+  #moveCount=0;
   #obstacles=[];
   #isMouseDown=false;
 
@@ -82,12 +83,14 @@ export default class GameScreen
     this.#ctx.fillStyle="red";
     this.#ctx.fill();
     this.#ball.move();
+    if(this.#isInsideBall(this.#golf_map.endPoint.x,this.#golf_map.endPoint.y,this.#ball)&&!this.#ball.isMoving)
+      console.log("Wygrałeś wykonując "+this.#moveCount+" ruchów!");
     requestAnimationFrame(()=>{this.#drawCallback()});
   }
 
   #isInsideBall(x, y, ball) {
     const distance = Math.sqrt((x - ball.pos.x) ** 2 + (y - ball.pos.y) ** 2);
-    return distance <= 3 *this.#canvas_scale;
+    return distance <= 3;
   }
   
   async #addMap(input,mapList)
@@ -215,12 +218,11 @@ export default class GameScreen
         }
       });
       document.addEventListener("mouseup", (event) => {
-        const ballRadius=3;
-        if (this.#isMouseDown) {
-          const mouseX = (event.offsetX + ballRadius)/this.#canvas_scale;
-          const mouseY = (event.offsetY+ ballRadius)/this.#canvas_scale;
-          console.log("x: "+mouseX+"y: "+mouseY);
+        if (this.#isMouseDown&&!this.#ball.isMoving) {
+          const mouseX = event.offsetX/this.#canvas_scale;
+          const mouseY = event.offsetY/this.#canvas_scale;
           this.#ball.setSpeed(mouseX,mouseY);
+          ++this.#moveCount;
         }
         this.#isMouseDown = false;
       });
