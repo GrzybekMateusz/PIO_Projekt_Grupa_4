@@ -4,8 +4,6 @@ import Point from "./Point.js";
 export default class GolfBall
 {
   #pos;
-  #xDirection=1;
-  #yDirection=1;
   #mapData;
   #obstacles;
   #xSpeed=0;
@@ -18,165 +16,48 @@ export default class GolfBall
     this.#obstacles=o;
   }
 
+  // zwraca true jeżeli piłka się zatrzyma
   move()
   {
     const ballRadius=3;
-    let xs=Math.round(this.#xSpeed);
-    let ys=Math.round(this.#ySpeed);
-    if(xs==0&&ys==0)
-      return;
-    let tpos=new Point(this.#pos.x,this.#pos.y);
-    while(xs!=0||ys!=0)
-    {
-      console.log("xs: "+xs+"ys: "+ys);
-      const t=Math.floor(tpos.y-ballRadius);
-      const b=Math.floor(tpos.y+ballRadius);
-      const l=Math.floor(tpos.x-ballRadius);
-      const r=Math.floor(tpos.x+ballRadius);
-      if(t%10==0)
-      {
-        if(t==0
-        ||(l!=0
-          &&this.#mapData.typeAtPoint(new Point(l-1,t-1))==GolfMap.ObjectType.Wall
-          &&this.#mapData.typeAtPoint(new Point(l-1,b))!=GolfMap.ObjectType.Wall)
-        ||(r!=this.#mapData.width*10
-          &&this.#mapData.typeAtPoint(new Point(r,t-1))==GolfMap.ObjectType.Wall
-          &&this.#mapData.typeAtPoint(new Point(r,b))==GolfMap.ObjectType.Wall))
-          {
-            this.#yDirection*=-1;
-            tpos.y+=this.#yDirection;
-          }
-      }
-      if(b%10==0)
-      {
-        if(b==this.#mapData.height*10
-        ||(l!=0
-          &&this.#mapData.typeAtPoint(new Point(l-1,b))==GolfMap.ObjectType.Wall
-          &&this.#mapData.typeAtPoint(new Point(l-1,t))!=GolfMap.ObjectType.Wall)
-        ||(r!=this.#mapData.width*10
-          &&this.#mapData.typeAtPoint(new Point(r,b))==GolfMap.ObjectType.Wall
-          &&this.#mapData.typeAtPoint(new Point(r,t))!=GolfMap.ObjectType.Wall))
-          {
-            this.#yDirection*=-1;
-            tpos.y+=this.#yDirection;
-          }
-      }
-      if(l%10==0)
-      {
-        if(l==0
-        ||(t!=0
-          &&this.#mapData.typeAtPoint(new Point(l-1,t-1))==GolfMap.ObjectType.Wall
-          &&this.#mapData.typeAtPoint(new Point(r,t-1))!=GolfMap.ObjectType.Wall)
-        ||(b!=this.#mapData.height*10
-          &&this.#mapData.typeAtPoint(new Point(l-1,b))==GolfMap.ObjectType.Wall
-          &&this.#mapData.typeAtPoint(new Point(r,b))!=GolfMap.ObjectType.Wall))
-          {
-            this.#xDirection*=-1;
-            tpos.x+=this.#xDirection;
-          }
-      }
-      if(r%10==0)
-      {
-        if(r==this.#mapData.width*10
-        ||(t!=0
-          &&this.#mapData.typeAtPoint(new Point(r,t-1))==GolfMap.ObjectType.Wall
-          &&this.#mapData.typeAtPoint(new Point(l,t-1))!=GolfMap.ObjectType.Wall)
-        ||(b!=this.#mapData.height*10
-          &&this.#mapData.typeAtPoint(new Point(r,b))==GolfMap.ObjectType.Wall
-          &&this.#mapData.typeAtPoint(new Point(l,b))!=GolfMap.ObjectType.Wall))
-        {
-          this.#xDirection*=-1;
-          tpos.x+=this.#xDirection;
-        }
-      }
-      /*if(tpos.x-ballRadius<=0||tpos.x+ballRadius>=this.#mapData.width*10)
-          this.#xDirection*=-1;
-      if(tpos.y-ballRadius<=0||tpos.y+ballRadius>=this.#mapData.height*10)
-          this.#yDirection*=-1;
-      for(let i in this.#obstacles){
-        let check = this.#intersects(this.#obstacles[i],tpos);
-    
-        if(check == 11){
-          this.#xDirection*=-1;
-        }
-        else if(check == 22){
-          this.#yDirection*=-1;
-        }
-      }*/
-      if(xs!=0)
-      {
-        tpos.x+=this.#xDirection;
-        --xs;
-      }
-      if(ys!=0)
-      {
-        tpos.y+=this.#yDirection;
-        --ys;
-      }
+    if(this.#pos.x-ballRadius+this.#xSpeed<=0||this.#pos.x+ballRadius+this.#xSpeed>=this.#mapData.width*10)
+      this.#xSpeed*=-1;
+    if(this.#pos.y-ballRadius+this.#ySpeed<=0||this.#pos.y+ballRadius+this.#ySpeed>=this.#mapData.height*10)
+      this.#ySpeed*=-1;
+    for(let i in this.#obstacles){
+      let check=this.#intersects(this.#obstacles[i],new Point(this.#pos.x+this.#xSpeed,this.#pos.y+this.#ySpeed));
+      if(check==11)
+        this.#xSpeed*=-1;
+      else if(check==22)
+        this.#ySpeed*=-1;
     }
-    this.#pos.x=tpos.x;
-    this.#pos.y=tpos.y;
-    //console.log("x: "+this.#pos.x+" y:"+this.#pos.y);
+    this.#pos.x+=this.#xSpeed;
+    this.#pos.y+=this.#ySpeed;
     this.#xSpeed*=0.99;
     this.#ySpeed*=0.99;
+    if(Math.abs(this.#xSpeed)<0.3&&Math.abs(this.#ySpeed)<0.3)
+      return true;
+    else
+      return false;
   }
 
   setSpeed(mouseX,mouseY)
   {
-    const distance = this.#getVectors(mouseX, mouseY);
-    const speedValues = this.#calculateSpeed(distance[0], distance[1]);
-    console.log("x: "+speedValues[0]+" y: "+speedValues[1]);
-    this.#xDirection=Math.sign(speedValues[0]);
-    this.#yDirection=Math.sign(speedValues[1]);
-    this.#xSpeed=Math.abs(speedValues[0]);
-    this.#ySpeed=Math.abs(speedValues[1]);
-  }
-
-  #getVectors(mouse_x, mouse_y) {
-    let mouseX = mouse_x - this.#pos.x;
-    let mouseY = mouse_y - this.#pos.y;
-
-    if (Math.abs(mouseX) <= this.radius / 2) {
-      mouseX = 0;
-    }
-
-    if (Math.abs(mouseY) <= this.radius / 2) {
-      mouseY = 0;
-    }
-
-    return [mouseX, mouseY];
-  }
-  
-  #calculateSpeed(speed_x, speed_y) {
-    const max_speed=15;
-    speed_x /= 2;
-    speed_y /= 2;
-
-    if (Math.abs(speed_x) < 1) {
-      speed_x = 0;
-    }
-
-    if (Math.abs(speed_x) > max_speed) {
-      if (speed_x < 0) {
-        speed_x = -max_speed;
-      } else {
-        speed_x = max_speed;
-      }
-    }
-
-    if (Math.abs(speed_y) < 1) {
-      speed_y = 0;
-    }
-
-    if (Math.abs(speed_y) > max_speed) {
-      if (speed_y < 0) {
-        speed_y = -max_speed;
-      } else {
-        speed_y = max_speed;
-      }
-    }
-
-    return [speed_x, speed_y];
+    const maxSpeed=15;
+    let xSpeed=mouseX-this.#pos.x;
+    let ySpeed=mouseY-this.#pos.y;
+    if(Math.abs(xSpeed)<=3)
+      xSpeed=0;
+    if(Math.abs(ySpeed)<=3)
+      ySpeed=0;
+    xSpeed/=20;
+    ySpeed/=20;
+    if(Math.abs(xSpeed)>maxSpeed)
+      xSpeed=Math.sign(xSpeed)*maxSpeed;
+    if(Math.abs(ySpeed)>maxSpeed)
+      ySpeed=Math.sign(ySpeed)*maxSpeed;
+    this.#xSpeed=xSpeed;
+    this.#ySpeed=ySpeed;
   }
 
   #intersects(rect,pos) {
