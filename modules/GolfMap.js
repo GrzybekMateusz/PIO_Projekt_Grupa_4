@@ -1,3 +1,5 @@
+import Point from "./Point.js";
+
 export default class GolfMap
 {
   static ObjectType={
@@ -76,6 +78,11 @@ export default class GolfMap
     return new GolfMap(map.width,map.height,map.map);
   }
 
+  typeAtPoint(p)
+  {
+    return this.#map[Math.floor(p.y/10)][Math.floor(p.x/10)];
+  }
+
   get width()
   {
     return this.#width;
@@ -89,5 +96,15 @@ export default class GolfMap
   get map()
   {
     return this.#map;
+  }
+
+  get startPoint()
+  {
+    for(let y=0;y<this.#height;++y)
+    {
+      for(let x=0;x<this.#width;++x)
+        if(this.#map[y][x]==GolfMap.ObjectType.Start)
+          return new Point(x*10+5,y*10+5);
+    }
   }
 }
