@@ -8,6 +8,10 @@ export default class GolfBall
   #obstacles;
   #xSpeed=0;
   #ySpeed=0;
+  #color='#'+(0x1000000+Math.random()*0xffffff).toString(16).substring(1,7);
+  #hasWon=false;
+  #isMoving=false;
+  #strikeCount=0;
 
   constructor(m,o)
   {
@@ -16,7 +20,6 @@ export default class GolfBall
     this.#obstacles=o;
   }
 
-  // zwraca true jeżeli piłka się zatrzyma
   move()
   {
     const ballRadius=3;
@@ -35,29 +38,38 @@ export default class GolfBall
     this.#pos.y+=this.#ySpeed;
     this.#xSpeed*=0.99;
     this.#ySpeed*=0.99;
-    if(Math.abs(this.#xSpeed)<0.3&&Math.abs(this.#ySpeed)<0.3)
-      return true;
+    if(Math.abs(this.#xSpeed)<0.01&&Math.abs(this.#ySpeed)<0.01)
+      this.#isMoving=false;
     else
-      return false;
+      this.#isMoving=true;
   }
 
   setSpeed(mouseX,mouseY)
   {
     const maxSpeed=15;
+    const slope=1.5;
+    const inputScale=0.1;
     let xSpeed=mouseX-this.#pos.x;
     let ySpeed=mouseY-this.#pos.y;
     if(Math.abs(xSpeed)<=3)
       xSpeed=0;
     if(Math.abs(ySpeed)<=3)
       ySpeed=0;
-    xSpeed/=20;
-    ySpeed/=20;
+    xSpeed*=inputScale;
+    ySpeed*=inputScale;
     if(Math.abs(xSpeed)>maxSpeed)
-      xSpeed=Math.sign(xSpeed)*maxSpeed;
+      xSpeed=maxSpeed;
     if(Math.abs(ySpeed)>maxSpeed)
-      ySpeed=Math.sign(ySpeed)*maxSpeed;
-    this.#xSpeed=xSpeed;
-    this.#ySpeed=ySpeed;
+      ySpeed=maxSpeed;
+    this.#xSpeed=Math.sign(xSpeed)*(1/Math.pow(maxSpeed,slope-1))*Math.pow(Math.abs(xSpeed),slope);
+    this.#ySpeed=Math.sign(ySpeed)*(1/Math.pow(maxSpeed,slope-1))*Math.pow(Math.abs(ySpeed),slope);
+    ++this.#strikeCount;
+    this.#isMoving=true;
+  }
+
+  win()
+  {
+    this.#hasWon=true;
   }
 
   #intersects(rect,pos) {
@@ -80,5 +92,25 @@ export default class GolfBall
   get pos()
   {
     return this.#pos;
+  }
+
+  get isMoving()
+  {
+    return this.#isMoving;
+  }
+
+  get strikeCount()
+  {
+    return this.#strikeCount;
+  }
+
+  get color()
+  {
+    return this.#color;
+  }
+
+  get hasWon()
+  {
+    return this.#hasWon;
   }
 }

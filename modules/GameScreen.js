@@ -8,8 +8,11 @@ export default class GameScreen
   #canvas;
   #ctx;
   #golf_map;
-  #ball;
+  #balls=[];
   #obstacles=[];
+  #playerCount=4;
+  #activePlayers=4;
+  #turn=0;
   #isMouseDown=false;
 
   constructor()
@@ -76,18 +79,54 @@ export default class GameScreen
   #drawCallback()
   {
     this.#renderMap();
-    this.#ctx.beginPath();
-    this.#ctx.arc(this.#ball.pos.x,this.#ball.pos.y,3,0,2*Math.PI);
-    this.#ctx.closePath();
-    this.#ctx.fillStyle="red";
-    this.#ctx.fill();
-    this.#ball.move();
+    if(!this.#balls[this.#turn].hasWon)
+    {
+      for(let i=this.#playerCount-1;i>=0;--i)
+      {
+        if(i==this.#turn||this.#balls[i].hasWon)
+          continue;
+        this.#ctx.beginPath();
+        this.#ctx.arc(this.#balls[i].pos.x,this.#balls[i].pos.y,3,0,2*Math.PI);
+        this.#ctx.closePath();
+        this.#ctx.fillStyle=this.#balls[i].color;
+        this.#ctx.fill();
+      }
+      this.#ctx.beginPath();
+      this.#ctx.arc(this.#balls[this.#turn].pos.x,this.#balls[this.#turn].pos.y,3,0,2*Math.PI);
+      this.#ctx.closePath();
+      this.#ctx.fillStyle=this.#balls[this.#turn].color;
+      this.#ctx.fill();
+      if(this.#balls[this.#turn].isMoving)
+      {
+        this.#balls[this.#turn].move();
+        if(!this.#balls[this.#turn].isMoving)
+        {
+          if(this.#isInsideBall(this.#golf_map.endPoint.x,this.#golf_map.endPoint.y,this.#balls[this.#turn]))
+          {
+            console.log("Gracz "+(this.#turn+1)+" wygrał wykonując "+this.#balls[this.#turn].strikeCount+" ruchów!");
+            this.#balls[this.#turn].win();
+          }
+          let guard=0;
+          do
+          {
+            ++this.#turn;
+            this.#turn%=this.#playerCount;
+            ++guard;
+          }
+          while(guard!=4&&this.#balls[this.#turn].hasWon);
+          if(guard==4)
+            console.log("Wszyscy gracze wygrali!");
+          else
+            console.log("turn "+this.#turn+"!");
+        }
+      }
+    }
     requestAnimationFrame(()=>{this.#drawCallback()});
   }
 
   #isInsideBall(x, y, ball) {
     const distance = Math.sqrt((x - ball.pos.x) ** 2 + (y - ball.pos.y) ** 2);
-    return distance <= 3 *this.#canvas_scale;
+    return distance <= 3;
   }
   
   async #addMap(input,mapList)
@@ -199,7 +238,8 @@ export default class GameScreen
     {
       await this.#loadPage("GameScreen");
       this.#getObstacles();
-      this.#ball=new GolfBall(this.#golf_map,this.#obstacles);
+      for(let i=0;i<this.#playerCount;++i)
+        this.#balls.push(new GolfBall(this.#golf_map,this.#obstacles));
       this.#canvas=document.getElementById("game_screen");
       this.#ctx=this.#canvas.getContext("2d");
       this.#resizeCallback();
@@ -210,17 +250,16 @@ export default class GameScreen
       this.#canvas.addEventListener("mousedown", (event) => {
         const mouseX = event.offsetX/this.#canvas_scale;
         const mouseY = event.offsetY/this.#canvas_scale;
-        if (this.#isInsideBall(mouseX, mouseY, this.#ball)) {
+        if (!this.#balls[this.#turn].isMoving&&this.#isInsideBall(mouseX, mouseY, this.#balls[this.#turn])) {
           this.#isMouseDown = true;
         }
       });
       document.addEventListener("mouseup", (event) => {
-        const ballRadius=3;
         if (this.#isMouseDown) {
-          const mouseX = (event.offsetX + ballRadius)/this.#canvas_scale;
-          const mouseY = (event.offsetY+ ballRadius)/this.#canvas_scale;
-          console.log("x: "+mouseX+"y: "+mouseY);
-          this.#ball.setSpeed(mouseX,mouseY);
+          const mouseX = event.offsetX/this.#canvas_scale;
+          const mouseY = event.offsetY/this.#canvas_scale;
+          this.#balls[this.#turn].setSpeed(mouseX,mouseY);
+          console.log("go "+this.#turn+"!")
         }
         this.#isMouseDown = false;
       });
