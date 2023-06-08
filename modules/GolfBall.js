@@ -8,7 +8,10 @@ export default class GolfBall
   #obstacles;
   #xSpeed=0;
   #ySpeed=0;
-  #isMoving=0;
+  #color='#'+(0x1000000+Math.random()*0xffffff).toString(16).substring(1,7);
+  #hasWon=false;
+  #isMoving=false;
+  #strikeCount=0;
 
   constructor(m,o)
   {
@@ -36,9 +39,9 @@ export default class GolfBall
     this.#xSpeed*=0.99;
     this.#ySpeed*=0.99;
     if(Math.abs(this.#xSpeed)<0.01&&Math.abs(this.#ySpeed)<0.01)
-      this.#isMoving=0;
+      this.#isMoving=false;
     else
-      this.#isMoving=1;
+      this.#isMoving=true;
   }
 
   setSpeed(mouseX,mouseY)
@@ -60,6 +63,13 @@ export default class GolfBall
       ySpeed=maxSpeed;
     this.#xSpeed=Math.sign(xSpeed)*(1/Math.pow(maxSpeed,slope-1))*Math.pow(Math.abs(xSpeed),slope);
     this.#ySpeed=Math.sign(ySpeed)*(1/Math.pow(maxSpeed,slope-1))*Math.pow(Math.abs(ySpeed),slope);
+    ++this.#strikeCount;
+    this.#isMoving=true;
+  }
+
+  win()
+  {
+    this.#hasWon=true;
   }
 
   #intersects(rect,pos) {
@@ -87,5 +97,20 @@ export default class GolfBall
   get isMoving()
   {
     return this.#isMoving;
+  }
+
+  get strikeCount()
+  {
+    return this.#strikeCount;
+  }
+
+  get color()
+  {
+    return this.#color;
+  }
+
+  get hasWon()
+  {
+    return this.#hasWon;
   }
 }
