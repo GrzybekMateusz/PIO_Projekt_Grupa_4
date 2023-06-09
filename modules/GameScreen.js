@@ -11,7 +11,6 @@ export default class GameScreen
   #balls=[];
   #obstacles=[];
   #playerCount=4;
-  #activePlayers=4;
   #turn=0;
   #isMouseDown=false;
 
@@ -43,6 +42,10 @@ export default class GameScreen
       {
         if(this.#golf_map.map[y][x]==GolfMap.ObjectType.Wall)
           this.#ctx.fillStyle="green";
+        else if(this.#golf_map.map[y][x]==GolfMap.ObjectType.Sand)
+          this.#ctx.fillStyle="yellow";
+        else if(this.#golf_map.map[y][x]==GolfMap.ObjectType.Gravel)
+          this.#ctx.fillStyle="gray";
         else
           this.#ctx.fillStyle="lime";
           this.#ctx.fillRect(x*10,y*10,10,10);

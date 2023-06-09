@@ -12,6 +12,7 @@ export default class GolfBall
   #hasWon=false;
   #isMoving=false;
   #strikeCount=0;
+  #friction=0.99;
 
   constructor(m,o)
   {
@@ -36,8 +37,20 @@ export default class GolfBall
     }
     this.#pos.x+=this.#xSpeed;
     this.#pos.y+=this.#ySpeed;
-    this.#xSpeed*=0.99;
-    this.#ySpeed*=0.99;
+    switch(this.#mapData.typeAtPoint(this.#pos))
+    {
+      case GolfMap.ObjectType.Sand:
+        this.#friction=0.97;
+        break;
+      case GolfMap.ObjectType.Gravel:
+        this.#friction=0.95;
+        break;
+      default:
+        this.#friction=0.99;
+        break;
+    }
+    this.#xSpeed*=this.#friction;
+    this.#ySpeed*=this.#friction;
     if(Math.abs(this.#xSpeed)<0.01&&Math.abs(this.#ySpeed)<0.01)
       this.#isMoving=false;
     else

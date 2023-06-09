@@ -6,7 +6,9 @@ export default class GolfMap
     Grass:0,
     Wall:1,
     Hole:2,
-    Start:3
+    Start:3,
+    Sand:4,
+    Gravel:5
   }
 
   #width;
@@ -41,6 +43,10 @@ export default class GolfMap
         let offset=(y*this.#width+x)*4;
         if(data[offset]==0&&data[offset+1]==0&&data[offset+2]==0)
           this.#map[y][x]=GolfMap.ObjectType.Wall;
+        else if(data[offset]==255&&data[offset+1]==255&&data[offset+2]==0)
+          this.#map[y][x]=GolfMap.ObjectType.Sand;
+        else if(data[offset]==0&&data[offset+1]==255&&data[offset+2]==255)
+          this.#map[y][x]=GolfMap.ObjectType.Gravel;
         else if(data[offset]==255&&data[offset+1]==255&&data[offset+2]==255)
           this.#map[y][x]=GolfMap.ObjectType.Grass;
         else if(data[offset]==255&&data[offset+1]==0&&data[offset+2]==0)
