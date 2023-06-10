@@ -1,10 +1,8 @@
-*
-{
-  margin:0;
+* {
+  margin: 0;
 }
 
-#game_screen
-{
+#game_screen {
   margin: auto;
   padding: 0;
   display: block;
@@ -16,142 +14,142 @@
 }
 
 #menu_bar {
-    position: absolute;
-    height: 100vh;
-    width: 40vw;
-    margin-left: 30vw;
-    margin-right: 30vw;
-    background-color: lightgrey;
-    border-left: solid black;
-    border-right: solid black;
+  position: absolute;
+  height: 100vh;
+  width: 40vw;
+  margin-left: 30vw;
+  margin-right: 30vw;
+  background-color: lightgrey;
+  border-left: solid black;
+  border-right: solid black;
 }
 
 #main_menu_header_bar {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    margin-top: 10vw;
-    margin-left: auto;
-    margin-right: auto;
-    width: 30vw;
-    height: 20vh;
-    background-color: wheat;
-    border-radius: 1.5vw;
-    border: solid black;
-    font-size: 5vw;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 10vw;
+  margin-left: auto;
+  margin-right: auto;
+  width: 30vw;
+  height: 20vh;
+  background-color: wheat;
+  border-radius: 1.5vw;
+  border: solid black;
+  font-size: 5vw;
 }
 
 #start_button {
-    display: block;
-    margin-top:30vh;
-    margin-left: auto;
-    margin-right: auto;
-    font-size: 3vw;
-    width: 20vw;
-    height: 10vh;
-    background-color: lavender;
-    border: solid black;
+  display: block;
+  margin-top: 30vh;
+  margin-left: auto;
+  margin-right: auto;
+  font-size: 3vw;
+  width: 20vw;
+  height: 10vh;
+  background-color: lavender;
+  border: solid black;
 }
 
 #player_menu_header_bar {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    margin-top: 10vh;
-    margin-left: auto;
-    margin-right: auto;
-    width: 30vw;
-    height: 10vh;
-    background-color: wheat;
-    border-radius: 1.5vw;
-    border: solid black;
-    font-size: 3vw;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 10vh;
+  margin-left: auto;
+  margin-right: auto;
+  width: 30vw;
+  height: 10vh;
+  background-color: wheat;
+  border-radius: 1.5vw;
+  border: solid black;
+  font-size: 3vw;
 }
 
 #player_buttons {
-    display: flex;
-    align-items: center;
-    justify-content:center;
-    flex-direction: row;
-    gap: 1vw;
-    margin-top: 20vh;
-    width: 33vw;
-    height: 10vh;
-    margin-left: auto;
-    margin-right: auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: row;
+  gap: 1vw;
+  margin-top: 20vh;
+  width: 33vw;
+  height: 10vh;
+  margin-left: auto;
+  margin-right: auto;
 }
 
-
-#player_button {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 10vw;
-    height: 10vh;
-    font-size: 5vh;
-    background-color: lavender;
-    border: solid black;
+.player_button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 10vw;
+  height: 10vh;
+  font-size: 5vh;
+  background-color: lavender;
+  border: solid black;
 }
 
-#number_display {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 10vw;
-    height: 10vh;
-    font-size: 5vh;
-    background-color: lavender;
-    border: solid black;
+#player_number_display {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 10vw;
+  height: 10vh;
+  font-size: 5vh;
+  background-color: lavender;
+  border: solid black;
 }
 
 #map_selection_button {
-    display: block;
-    margin-top: auto;
-    margin-left: auto;
-    margin-right: auto;
-    font-size: 3vw;
-    width: 25vw;
-    height: 10vh;
-    margin-top: 15vh;
-    background-color: lavender;
-    border: solid black;
+  display: block;
+  margin-top: auto;
+  margin-left: auto;
+  margin-right: auto;
+  font-size: 3vw;
+  width: 25vw;
+  height: 10vh;
+  margin-top: 15vh;
+  background-color: lavender;
+  border: solid black;
 }
 
 #map_menu_header_bar {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    margin-top: 2vh;
-    margin-left: auto;
-    margin-right: auto;
-    width: 30vw;
-    height: 5vh;
-    background-color: wheat;
-    border-radius: 1.5vw;
-    border: solid black;
-    font-size: 2.5vw;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 2vh;
+  margin-left: auto;
+  margin-right: auto;
+  width: 30vw;
+  height: 5vh;
+  background-color: wheat;
+  border-radius: 1.5vw;
+  border: solid black;
+  font-size: 2.5vw;
 }
 
 #map_fields_container {
-    overflow-x: hidden;
-    overflow-y: auto;
-    margin-top: 10vh;
-    width: 40vw;
-    height: 50vh;
+  overflow-x: hidden;
+  overflow-y: auto;
+  margin-top: 10vh;
+  text-align: center;
+  width: 40vw;
+  height: 50vh;
 }
 
 .map_field {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    margin-left: 1vw;
-    margin-right: 1vw;
-    margin-top: 1vh;
-    margin-bottom: 1vh;
-    padding: 1vh;
-    background-color: wheat;
-    border-radius: 1.5vw;
-    border: solid black;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-left: 1vw;
+  margin-right: 1vw;
+  margin-top: 1vh;
+  margin-bottom: 1vh;
+  padding: 1vh;
+  background-color: lavender;
+  border-radius: 1.5vw;
+  border: solid black;
 }
 
 .map_field_remove {
@@ -162,72 +160,96 @@
 }
 
 #buttons {
-    display: flex;
-    align-items: center;
-    justify-content:center;
-    flex-direction: row;
-    gap: 2vw;
-    margin-top: 10vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: row;
+  gap: 2vw;
+  margin-top: 10vh;
 }
 
 #start_game_button {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 15vw;
-    height: 5vh;
-    font-size: 1.5vw;
-    background-color: lavender;
-    border: solid black;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 15vw;
+  height: 5vh;
+  font-size: 1.5vw;
+  background-color: lavender;
+  border: solid black;
 }
 
 #map_button {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 15vw;
-    height: 4vh;
-    font-size: 1.5vw;
-    background-color: lavender;
-    border: solid black;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 15vw;
+  height: 4vh;
+  font-size: 1.5vw;
+  background-color: lavender;
+  border: solid black;
 }
 
 body {
-    background-image: url(menu_background.jpg);
-    background-repeat: no-repeat;
-    background-size: cover;
-    width: 100vw;
-    height: 100vh;
+  background-image: url(menu_background.jpg);
+  background-repeat: no-repeat;
+  background-size: cover;
+  width: 100vw;
+  height: 100vh;
 }
 
 #game_screen_div {
-    position: relative;
-    width: 100vw;
-    height: 100vh;
-    background : #2C2A2A;
+  position: relative;
+  width: 100vw;
+  height: 100vh;
+  background: #2C2A2A;
 }
 
 #status_message {
-    visibility: hidden;
-    text-align: center;
-    height: 5%;
-    width: 60%;
-    margin-left: auto;
-    margin-right: auto;
-    margin-top: 2vw;
-    background-color: lightgrey;
-    border: solid black;
+  visibility: hidden;
+  text-align: center;
+  height: 5%;
+  width: 60%;
+  margin-left: auto;
+  margin-right: auto;
+  margin-top: 2vw;
+  background-color: lightgrey;
+  border: solid black;
 }
 
-.go_back_button{
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    margin-top: 1vh;
-    margin-left: 1vw;
-    height: 5vh;
-    width: 5vw;
-    font-size: 2.5vh;
-    background-color: wheat;
-    border: solid black;
+.go_back_button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 1vh;
+  margin-left: 1vw;
+  height: 5vh;
+  width: 5vw;
+  font-size: 2.5vh;
+  background-color: wheat;
+  border: solid black;
+}
+
+#end_prompt {
+  padding: 1em;
+  position: absolute;
+  margin: 0;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: lightgray;
+  border: solid black;
+}
+
+#end_text {
+  font-size: 1.5em;
+  text-align: center;
+  margin-bottom: 1em;
+}
+
+#end_button {
+  padding: 1em;
+  text-align: center;
+  background-color: lavender;
+  border: solid black;
 }
