@@ -11,6 +11,7 @@
   bottom: 0;
   left: 0;
   right: 0;
+  transform: translate(0, 5vh);
 }
 
 #menu_bar {
@@ -172,8 +173,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 15vw;
-  height: 5vh;
+  padding: 2em;
   font-size: 1.5vw;
   background-color: lavender;
   border: solid black;
@@ -183,8 +183,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 15vw;
-  height: 4vh;
+  padding: 2em;
   font-size: 1.5vw;
   background-color: lavender;
   border: solid black;
@@ -252,4 +251,10 @@ body {
   text-align: center;
   background-color: lavender;
   border: solid black;
+}
+
+#player_info {
+  background-color: lightgray;
+  width: 100%;
+  height: 10%;
 }

@@ -73,7 +73,7 @@ export default class GameScreen
 
   #resizeCallback()
   {
-    this.#canvas_scale=Math.min(innerHeight/(this.#golf_map.height*10),innerWidth/(this.#golf_map.width*10));
+    this.#canvas_scale=Math.min(0.9*innerHeight/(this.#golf_map.height*10),innerWidth/(this.#golf_map.width*10));
     this.#canvas.width=this.#golf_map.width*10*this.#canvas_scale;
     this.#canvas.height=this.#golf_map.height*10*this.#canvas_scale;
     this.#ctx.scale(this.#canvas_scale,this.#canvas_scale);
