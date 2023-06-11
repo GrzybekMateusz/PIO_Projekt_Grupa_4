@@ -104,9 +104,11 @@ export default class GameScreen
         this.#balls[this.#turn].move();
         if(!this.#balls[this.#turn].isMoving)
         {
+          document.querySelector("#player"+this.#turn+" .player_info_text").innerHTML=this.#balls[this.#turn].strikeCount;
+          document.querySelector("#player"+this.#turn+" .player_info_ball").style.border="";
           if(this.#isInsideBall(this.#golf_map.endPoint.x,this.#golf_map.endPoint.y,this.#balls[this.#turn]))
           {
-            console.log("Gracz "+(this.#turn+1)+" wygrał wykonując "+this.#balls[this.#turn].strikeCount+" ruchów!");
+            document.querySelector("#player"+this.#turn+" .player_info_ball svg").style.display="initial";
             this.#balls[this.#turn].win();
           }
           let guard=0;
@@ -119,6 +121,11 @@ export default class GameScreen
           while(guard!=4&&this.#balls[this.#turn].hasWon);
           if(guard==4)
             this.#end_prompt();
+          else
+          {
+            document.querySelector("#player"+this.#turn+" .player_info_ball").style.border="0.5vh solid black";
+            document.querySelector("#player"+this.#turn+" .player_info_ball").style.borderRadius="3.5vh";
+          }
         }
       }
     }
@@ -131,7 +138,7 @@ export default class GameScreen
     end.id="end_prompt";
     document.body.appendChild(end);
     const end_text=document.createElement("div");
-    end_text.innerHTML="Wszyscy gracze wygrali.";
+    end_text.innerHTML="Wszyscy gracze wygrali";
     end.appendChild(end_text);
     end_text.id="end_text";
     const end_button=document.createElement("div");
@@ -281,7 +288,26 @@ export default class GameScreen
       this.#getObstacles();
       const colors=["red","magenta","aqua","orange"];
       for(let i=0;i<this.#playerCount;++i)
+      {
         this.#balls.push(new GolfBall(this.#golf_map,this.#obstacles,colors[i]));
+        const player_info=document.getElementById("player_info");
+        const player_info_box=document.createElement("div");
+        player_info_box.className="player_info_box";
+        player_info_box.id="player"+i;
+        player_info.appendChild(player_info_box);
+        const player_info_ball=document.createElement("div");
+        player_info_ball.innerHTML="<svg viewBox='0 0 100 80' width='6vh' style='display:none;transform:translate(0,-4vh);'><polygon points='0,80 100,80 100,0 75,50 50,0 25,50 0,0' style='fill:yellow;'/></svg>";
+        player_info_ball.className="player_info_ball";
+        player_info_ball.style="background-color: "+colors[i];
+        player_info_box.appendChild(player_info_ball);
+        const player_info_text=document.createElement("div");
+        player_info_text.className="player_info_text";
+        player_info_text.innerHTML=this.#balls[i].strikeCount;
+        player_info_box.appendChild(player_info_text);
+
+      }
+      document.querySelector("#player"+this.#turn+" .player_info_ball").style.border="0.5vh solid black";
+      document.querySelector("#player"+this.#turn+" .player_info_ball").style.borderRadius="3.5vh";
       this.#canvas=document.getElementById("game_screen");
       this.#ctx=this.#canvas.getContext("2d");
       this.#resizeCallback();
