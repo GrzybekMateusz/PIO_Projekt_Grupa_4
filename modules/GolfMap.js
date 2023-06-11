@@ -52,25 +52,25 @@ export default class GolfMap
         else if(data[offset]==255&&data[offset+1]==0&&data[offset+2]==0)
         {
           if(hole_found)
-            throw new Error("Map can contain only one hole!");
+            throw new Error("Mapa może zawierać tylko jeden dołek!");
           hole_found=true;
           this.#map[y][x]=GolfMap.ObjectType.Hole;
         }
         else if(data[offset]==0&&data[offset+1]==255&&data[offset+2]==0)
         {
           if(start_found)
-            throw new Error("Map can contain only one starting point!");
+            throw new Error("Mapa może zawierać tylko jeden punkt startowy!");
           start_found=true;
           this.#map[y][x]=GolfMap.ObjectType.Start;
         }
         else
-          throw new Error("Invalid color used!");
+          throw new Error("Użyto niepoprawnych kolorów!");
       }
     }
     if(!start_found)
-      throw new Error("Map must contain a starting point!");
+      throw new Error("Mapa musi zawierać punkt startowy!");
     if(!hole_found)
-      throw new Error("Map must contain a hole!");
+      throw new Error("Mapa musi zawierać dołek!");
   }
 
   serialize()

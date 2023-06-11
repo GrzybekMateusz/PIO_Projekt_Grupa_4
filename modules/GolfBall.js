@@ -14,11 +14,12 @@ export default class GolfBall
   #strikeCount=0;
   #friction=0.99;
 
-  constructor(m,o)
+  constructor(m,o,c)
   {
     this.#pos=m.startPoint;
     this.#mapData=m;
     this.#obstacles=o;
+    this.#color=c;
   }
 
   move()

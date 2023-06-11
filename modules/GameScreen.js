@@ -10,7 +10,7 @@ export default class GameScreen
   #golf_map;
   #balls=[];
   #obstacles=[];
-  #playerCount=4;
+  #playerCount=1;
   #turn=0;
   #isMouseDown=false;
 
@@ -73,7 +73,7 @@ export default class GameScreen
 
   #resizeCallback()
   {
-    this.#canvas_scale=Math.min(innerHeight/(this.#golf_map.height*10),innerWidth/(this.#golf_map.width*10));
+    this.#canvas_scale=Math.min(0.9*innerHeight/(this.#golf_map.height*10),innerWidth/(this.#golf_map.width*10));
     this.#canvas.width=this.#golf_map.width*10*this.#canvas_scale;
     this.#canvas.height=this.#golf_map.height*10*this.#canvas_scale;
     this.#ctx.scale(this.#canvas_scale,this.#canvas_scale);
@@ -104,9 +104,11 @@ export default class GameScreen
         this.#balls[this.#turn].move();
         if(!this.#balls[this.#turn].isMoving)
         {
+          document.querySelector("#player"+this.#turn+" .player_info_text").innerHTML=this.#balls[this.#turn].strikeCount;
+          document.querySelector("#player"+this.#turn+" .player_info_ball").style.border="";
           if(this.#isInsideBall(this.#golf_map.endPoint.x,this.#golf_map.endPoint.y,this.#balls[this.#turn]))
           {
-            console.log("Gracz "+(this.#turn+1)+" wygrał wykonując "+this.#balls[this.#turn].strikeCount+" ruchów!");
+            document.querySelector("#player"+this.#turn+" .player_info_ball svg").style.display="initial";
             this.#balls[this.#turn].win();
           }
           let guard=0;
@@ -118,13 +120,34 @@ export default class GameScreen
           }
           while(guard!=4&&this.#balls[this.#turn].hasWon);
           if(guard==4)
-            console.log("Wszyscy gracze wygrali!");
+            this.#end_prompt();
           else
-            console.log("turn "+this.#turn+"!");
+          {
+            document.querySelector("#player"+this.#turn+" .player_info_ball").style.border="0.5vh solid black";
+            document.querySelector("#player"+this.#turn+" .player_info_ball").style.borderRadius="3.5vh";
+          }
         }
       }
     }
     requestAnimationFrame(()=>{this.#drawCallback()});
+  }
+
+  #end_prompt()
+  {
+    const end=document.createElement("div");
+    end.id="end_prompt";
+    document.body.appendChild(end);
+    const end_text=document.createElement("div");
+    end_text.innerHTML="Wszyscy gracze wygrali";
+    end.appendChild(end_text);
+    end_text.id="end_text";
+    const end_button=document.createElement("div");
+    end_button.innerHTML="Powrót do menu";
+    end.appendChild(end_button);
+    end_button.id="end_button";
+    end_button.addEventListener("click",()=>{
+      location.reload();
+    })
   }
 
   #isInsideBall(x, y, ball) {
@@ -137,14 +160,14 @@ export default class GameScreen
     try
     {
       if(input.files.length==0)
-        throw new Error("No file!");
+        throw new Error("Brak pliku!");
       const file=input.files[0];
       if(!file.type.startsWith("image/"))
-        throw new Error("Invalid file type!");
+        throw new Error("Niepoprawny typ pliku!");
       const map_name=file.name.substring(0,file.name.lastIndexOf('.'));
       const map_list=Object.keys(localStorage);
       if(map_list.includes("map_"+map_name))
-        throw new Error("Map named \""+map_name+"\" ready in library!");
+        throw new Error("Mapa nazwana \""+map_name+"\" już istnieje w bibliotece!");
       const bitmap=await createImageBitmap(file);
       const map=new GolfMap(null,null,null);
       map.fromBitmap(bitmap);
@@ -179,6 +202,10 @@ export default class GameScreen
         parentBox.appendChild(field);
         field.addEventListener("click",()=>{
           this.#golf_map=GolfMap.deserialize(localStorage.getItem(map_name));
+          parentBox.childNodes.forEach((e)=>{
+            e.style="";
+          });
+          field.style="background-color:wheat";
         });
         field_remove.addEventListener("click",()=>{
           localStorage.removeItem(map_name);
@@ -197,6 +224,24 @@ export default class GameScreen
     await this.#loadPage("PlayersMenu");
     const map_selection_button=document.getElementById("map_selection_button");
     const go_back_button_players=document.getElementById("go_back_button_players");
+    const remove_player_button=document.getElementById("remove_player_button");
+    const add_player_button=document.getElementById("add_player_button");
+    const player_number_display=document.getElementById("player_number_display");
+    player_number_display.innerHTML=this.#playerCount;
+    remove_player_button.addEventListener("click",()=>{
+      if(this.#playerCount>1)
+      {
+        --this.#playerCount;
+        player_number_display.innerHTML=this.#playerCount;
+      }
+    });
+    add_player_button.addEventListener("click",()=>{
+      if(this.#playerCount<4)
+      {
+        ++this.#playerCount;
+        player_number_display.innerHTML=this.#playerCount;
+      }
+    });
     map_selection_button.addEventListener("click",async ()=>{
       this.#loadMapSelectionMenu()
     });
@@ -241,8 +286,28 @@ export default class GameScreen
     {
       await this.#loadPage("GameScreen");
       this.#getObstacles();
+      const colors=["red","magenta","aqua","orange"];
       for(let i=0;i<this.#playerCount;++i)
-        this.#balls.push(new GolfBall(this.#golf_map,this.#obstacles));
+      {
+        this.#balls.push(new GolfBall(this.#golf_map,this.#obstacles,colors[i]));
+        const player_info=document.getElementById("player_info");
+        const player_info_box=document.createElement("div");
+        player_info_box.className="player_info_box";
+        player_info_box.id="player"+i;
+        player_info.appendChild(player_info_box);
+        const player_info_ball=document.createElement("div");
+        player_info_ball.innerHTML="<svg viewBox='0 0 100 80' width='6vh' style='display:none;transform:translate(0,-4vh);'><polygon points='0,80 100,80 100,0 75,50 50,0 25,50 0,0' style='fill:yellow;'/></svg>";
+        player_info_ball.className="player_info_ball";
+        player_info_ball.style="background-color: "+colors[i];
+        player_info_box.appendChild(player_info_ball);
+        const player_info_text=document.createElement("div");
+        player_info_text.className="player_info_text";
+        player_info_text.innerHTML=this.#balls[i].strikeCount;
+        player_info_box.appendChild(player_info_text);
+
+      }
+      document.querySelector("#player"+this.#turn+" .player_info_ball").style.border="0.5vh solid black";
+      document.querySelector("#player"+this.#turn+" .player_info_ball").style.borderRadius="3.5vh";
       this.#canvas=document.getElementById("game_screen");
       this.#ctx=this.#canvas.getContext("2d");
       this.#resizeCallback();
@@ -262,7 +327,6 @@ export default class GameScreen
           const mouseX = event.offsetX/this.#canvas_scale;
           const mouseY = event.offsetY/this.#canvas_scale;
           this.#balls[this.#turn].setSpeed(mouseX,mouseY);
-          console.log("go "+this.#turn+"!")
         }
         this.#isMouseDown = false;
       });
