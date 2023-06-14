@@ -1,10 +1,14 @@
+import Point from "./Point.js";
+
 export default class GolfMap
 {
   static ObjectType={
     Grass:0,
     Wall:1,
     Hole:2,
-    Start:3
+    Start:3,
+    Sand:4,
+    Gravel:5
   }
 
   #width;
@@ -39,30 +43,34 @@ export default class GolfMap
         let offset=(y*this.#width+x)*4;
         if(data[offset]==0&&data[offset+1]==0&&data[offset+2]==0)
           this.#map[y][x]=GolfMap.ObjectType.Wall;
+        else if(data[offset]==255&&data[offset+1]==255&&data[offset+2]==0)
+          this.#map[y][x]=GolfMap.ObjectType.Sand;
+        else if(data[offset]==0&&data[offset+1]==255&&data[offset+2]==255)
+          this.#map[y][x]=GolfMap.ObjectType.Gravel;
         else if(data[offset]==255&&data[offset+1]==255&&data[offset+2]==255)
           this.#map[y][x]=GolfMap.ObjectType.Grass;
         else if(data[offset]==255&&data[offset+1]==0&&data[offset+2]==0)
         {
           if(hole_found)
-            throw new Error("Map can contain only one hole!");
+            throw new Error("Mapa może zawierać tylko jeden dołek!");
           hole_found=true;
           this.#map[y][x]=GolfMap.ObjectType.Hole;
         }
         else if(data[offset]==0&&data[offset+1]==255&&data[offset+2]==0)
         {
           if(start_found)
-            throw new Error("Map can contain only one starting point!");
+            throw new Error("Mapa może zawierać tylko jeden punkt startowy!");
           start_found=true;
           this.#map[y][x]=GolfMap.ObjectType.Start;
         }
         else
-          throw new Error("Invalid color used!");
+          throw new Error("Użyto niepoprawnych kolorów!");
       }
     }
     if(!start_found)
-      throw new Error("Map must contain a starting point!");
+      throw new Error("Mapa musi zawierać punkt startowy!");
     if(!hole_found)
-      throw new Error("Map must contain a hole!");
+      throw new Error("Mapa musi zawierać dołek!");
   }
 
   serialize()
@@ -74,6 +82,11 @@ export default class GolfMap
   {
     const map=JSON.parse(json_string);
     return new GolfMap(map.width,map.height,map.map);
+  }
+
+  typeAtPoint(p)
+  {
+    return this.#map[Math.floor(p.y/10)][Math.floor(p.x/10)];
   }
 
   get width()
@@ -89,5 +102,25 @@ export default class GolfMap
   get map()
   {
     return this.#map;
+  }
+
+  get startPoint()
+  {
+    for(let y=0;y<this.#height;++y)
+    {
+      for(let x=0;x<this.#width;++x)
+        if(this.#map[y][x]==GolfMap.ObjectType.Start)
+          return new Point(x*10+5,y*10+5);
+    }
+  }
+
+  get endPoint()
+  {
+    for(let y=0;y<this.#height;++y)
+    {
+      for(let x=0;x<this.#width;++x)
+        if(this.#map[y][x]==GolfMap.ObjectType.Hole)
+          return new Point(x*10+5,y*10+5);
+    }
   }
 }
