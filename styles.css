@@ -253,6 +253,30 @@ body {
   border: solid black;
 }
 
+#tutorial_prompt {
+  padding: 1em;
+  position: absolute;
+  margin: 0;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: lightgray;
+  border: solid black;
+}
+
+#tutorial_text {
+  font-size: 1.5em;
+  text-align: center;
+  margin-bottom: 1em;
+}
+
+#begin_button {
+  padding: 1em;
+  text-align: center;
+  background-color: lavender;
+  border: solid black;
+}
+
 #player_info {
   display: flex;
   justify-content: space-around;

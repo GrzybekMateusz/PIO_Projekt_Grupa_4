@@ -150,6 +150,24 @@ export default class GameScreen
     })
   }
 
+  #tutorial_prompt()
+  {
+    const tutorial=document.createElement("div");
+    tutorial.id="tutorial_prompt";
+    document.body.appendChild(tutorial);
+    const tutorial_text=document.createElement("div");
+    tutorial_text.innerHTML="TUTORIAL<br/>Poruszaj swoją piłką przeciągając myszą<br/>Gra się kończy gdy wszyscy gracze trafią do dołka";
+    tutorial.appendChild(tutorial_text);
+    tutorial_text.id="tutorial_text";
+    const begin_button=document.createElement("div");
+    begin_button.innerHTML="OK";
+    tutorial.appendChild(begin_button);
+    begin_button.id="begin_button";
+    begin_button.addEventListener("click",()=>{
+      tutorial.remove();
+    })
+  }
+
   #isInsideBall(x, y, ball) {
     const distance = Math.sqrt((x - ball.pos.x) ** 2 + (y - ball.pos.y) ** 2);
     return distance <= 3;
@@ -285,6 +303,7 @@ export default class GameScreen
     if(this.#golf_map!=null && this.#golf_map instanceof GolfMap)
     {
       await this.#loadPage("GameScreen");
+      this.#tutorial_prompt();
       this.#getObstacles();
       const colors=["red","magenta","aqua","orange"];
       for(let i=0;i<this.#playerCount;++i)
