@@ -102,36 +102,42 @@ export default class GameScreen
       if(this.#balls[this.#turn].isMoving)
       {
         this.#balls[this.#turn].move();
-        if(!this.#balls[this.#turn].isMoving)
+        if(this.#isInsideBall(this.#golf_map.endPoint.x,this.#golf_map.endPoint.y,this.#balls[this.#turn]))
         {
-          document.querySelector("#player"+this.#turn+" .player_info_text").innerHTML=this.#balls[this.#turn].strikeCount;
-          document.querySelector("#player"+this.#turn+" .player_info_ball").style.border="";
-          if(this.#isInsideBall(this.#golf_map.endPoint.x,this.#golf_map.endPoint.y,this.#balls[this.#turn]))
-          {
-            document.querySelector("#player"+this.#turn+" .player_info_ball svg").style.display="initial";
-            this.#balls[this.#turn].win();
-          }
-          let guard=0;
-          do
-          {
-            ++this.#turn;
-            this.#turn%=this.#playerCount;
-            ++guard;
-          }
-          while(guard!=4&&this.#balls[this.#turn].hasWon);
-          if(guard==4)
-            this.#end_prompt();
-          else
-          {
-            document.querySelector("#player"+this.#turn+" .player_info_ball").style.border="0.5vh solid black";
-            document.querySelector("#player"+this.#turn+" .player_info_ball").style.borderRadius="3.5vh";
-          }
+          document.querySelector("#player"+this.#turn+" .player_info_ball svg").style.display="initial";
+          this.#balls[this.#turn].win();
+          this.#change_turn();
+        }
+        else if(!this.#balls[this.#turn].isMoving)
+        {
+          this.#change_turn();
         }
       }
     }
     requestAnimationFrame(()=>{this.#drawCallback()});
   }
 
+  #change_turn()
+  {
+    document.querySelector("#player"+this.#turn+" .player_info_text").innerHTML=this.#balls[this.#turn].strikeCount;
+    document.querySelector("#player"+this.#turn+" .player_info_ball").style.border="";
+    let guard=0;
+    do
+    {
+      ++this.#turn;
+      this.#turn%=this.#playerCount;
+      ++guard;
+    }
+    while(guard!=4&&this.#balls[this.#turn].hasWon);
+    if(guard==4)
+      this.#end_prompt();
+    else
+    {
+      document.querySelector("#player"+this.#turn+" .player_info_ball").style.border="0.5vh solid black";
+      document.querySelector("#player"+this.#turn+" .player_info_ball").style.borderRadius="3.5vh";
+    }
+    
+  }
   #end_prompt()
   {
     const end=document.createElement("div");
