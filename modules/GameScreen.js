@@ -128,8 +128,8 @@ export default class GameScreen
       this.#turn%=this.#playerCount;
       ++guard;
     }
-    while(guard!=4&&this.#balls[this.#turn].hasWon);
-    if(guard==4)
+    while(guard!=this.#playerCount+1&&this.#balls[this.#turn].hasWon);
+    if(guard==this.#playerCount+1)
       this.#end_prompt();
     else
     {
