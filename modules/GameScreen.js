@@ -41,13 +41,13 @@ export default class GameScreen
       for(let x=0;x<this.#golf_map.width;++x)
       {
         if(this.#golf_map.map[y][x]==GolfMap.ObjectType.Wall)
-          this.#ctx.fillStyle="green";
+          this.#ctx.fillStyle="#143506";
         else if(this.#golf_map.map[y][x]==GolfMap.ObjectType.Sand)
-          this.#ctx.fillStyle="yellow";
+          this.#ctx.fillStyle="#d5cb98";
         else if(this.#golf_map.map[y][x]==GolfMap.ObjectType.Gravel)
-          this.#ctx.fillStyle="gray";
+          this.#ctx.fillStyle="#494949";
         else
-          this.#ctx.fillStyle="lime";
+          this.#ctx.fillStyle="#508928";
           this.#ctx.fillRect(x*10,y*10,10,10);
         if(this.#golf_map.map[y][x]==GolfMap.ObjectType.Hole)
         {
@@ -308,7 +308,7 @@ export default class GameScreen
       await this.#loadPage("GameScreen");
       this.#tutorial_prompt();
       this.#getObstacles();
-      const colors=["red","magenta","aqua","orange"];
+      const colors=["red","magenta","orange","blue"];
       for(let i=0;i<this.#playerCount;++i)
       {
         this.#balls.push(new GolfBall(this.#golf_map,this.#obstacles,colors[i]));
