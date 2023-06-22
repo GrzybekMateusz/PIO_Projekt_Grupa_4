@@ -41,13 +41,13 @@ export default class GameScreen
       for(let x=0;x<this.#golf_map.width;++x)
       {
         if(this.#golf_map.map[y][x]==GolfMap.ObjectType.Wall)
-          this.#ctx.fillStyle="green";
+          this.#ctx.fillStyle="#143506";
         else if(this.#golf_map.map[y][x]==GolfMap.ObjectType.Sand)
-          this.#ctx.fillStyle="yellow";
+          this.#ctx.fillStyle="#d5cb98";
         else if(this.#golf_map.map[y][x]==GolfMap.ObjectType.Gravel)
-          this.#ctx.fillStyle="gray";
+          this.#ctx.fillStyle="#494949";
         else
-          this.#ctx.fillStyle="lime";
+          this.#ctx.fillStyle="#508928";
           this.#ctx.fillRect(x*10,y*10,10,10);
         if(this.#golf_map.map[y][x]==GolfMap.ObjectType.Hole)
         {
@@ -138,6 +138,7 @@ export default class GameScreen
     }
     
   }
+
   #end_prompt()
   {
     const end=document.createElement("div");
@@ -181,28 +182,20 @@ export default class GameScreen
   
   async #addMap(input,mapList)
   {
-    try
-    {
-      if(input.files.length==0)
-        throw new Error("Brak pliku!");
-      const file=input.files[0];
-      if(!file.type.startsWith("image/"))
-        throw new Error("Niepoprawny typ pliku!");
-      const map_name=file.name.substring(0,file.name.lastIndexOf('.'));
-      const map_list=Object.keys(localStorage);
-      if(map_list.includes("map_"+map_name))
-        throw new Error("Mapa nazwana \""+map_name+"\" już istnieje w bibliotece!");
-      const bitmap=await createImageBitmap(file);
-      const map=new GolfMap(null,null,null);
-      map.fromBitmap(bitmap);
-      localStorage.setItem("map_"+map_name,map.serialize());
-      this.#showMapList(mapList);
-    }
-    catch(e)
-    {
-      console.error(e);
-      return e;
-    }
+    if(input.files.length==0)
+      throw new Error("Brak pliku!");
+    const file=input.files[0];
+    if(!file.type.startsWith("image/"))
+      throw new Error("Niepoprawny typ pliku!");
+    const map_name=file.name.substring(0,file.name.lastIndexOf('.'));
+    const map_list=Object.keys(localStorage);
+    if(map_list.includes("map_"+map_name))
+      throw new Error("Mapa nazwana \""+map_name+"\" już istnieje w bibliotece!");
+    const bitmap=await createImageBitmap(file);
+    const map=new GolfMap(null,null,null);
+    map.fromBitmap(bitmap);
+    localStorage.setItem("map_"+map_name,map.serialize());
+    this.#showMapList(mapList);
   }
 
   #showMapList(parentBox)
@@ -219,7 +212,7 @@ export default class GameScreen
         field_name.innerHTML=map_name.substring(4);
         field_name.className="map_field_name";
         const field_remove=document.createElement("div");
-        field_remove.innerHTML="Remove";
+        field_remove.innerHTML="Usuń";
         field_remove.className="map_field_remove";
         field.appendChild(field_name);
         field.appendChild(field_remove);
@@ -280,6 +273,7 @@ export default class GameScreen
     const start_game_button=document.getElementById("start_game_button");
     const map_fields_container=document.getElementById("map_fields_container");
     const go_back_button_maps = document.getElementById("go_back_button_maps");
+    const status_message = document.getElementById("status_message");
     const map_upload=document.getElementById("map_upload");
     this.#showMapList(map_fields_container);
     map_upload.addEventListener("change",async ()=>{
@@ -291,17 +285,20 @@ export default class GameScreen
     go_back_button_maps.addEventListener("click", async ()=>{
       this.#loadPlayersMenu();
     });
+    status_message.querySelector("#status_button").addEventListener("click",async ()=>{
+      status_message.style.display="none";
+    });
   }
 
   async #loadMapLoadedPrompt(map_upload, map_fields_container) {
-    this.#golf_map=await this.#addMap(map_upload, map_fields_container);
-    if(this.#golf_map instanceof Error){
-       status_message.style.visibility='visible';
-       status_message.innerHTML = this.#golf_map.message;
+    try
+    {
+      await this.#addMap(map_upload, map_fields_container);
     }
-    else{
-      status_message.style.visibility='visible';
-      status_message.innerHTML = 'Załadowano mapę';
+    catch(e)
+    {
+      status_message.querySelector("#status_text").innerHTML = e.message;
+      status_message.style.display='initial';
     }
   }
 
@@ -311,7 +308,7 @@ export default class GameScreen
       await this.#loadPage("GameScreen");
       this.#tutorial_prompt();
       this.#getObstacles();
-      const colors=["red","magenta","aqua","orange"];
+      const colors=["red","magenta","orange","blue"];
       for(let i=0;i<this.#playerCount;++i)
       {
         this.#balls.push(new GolfBall(this.#golf_map,this.#obstacles,colors[i]));

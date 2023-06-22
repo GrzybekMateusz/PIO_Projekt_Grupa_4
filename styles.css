@@ -1,5 +1,14 @@
 * {
   margin: 0;
+  overflow: hidden;
+}
+
+body {
+  background-image: url(menu_background.jpg);
+  background-repeat: no-repeat;
+  background-size: cover;
+  width: 100vw;
+  height: 100vh;
 }
 
 #game_screen {
@@ -15,11 +24,9 @@
 }
 
 #menu_bar {
-  position: absolute;
-  height: 100vh;
-  width: 40vw;
-  margin-left: 30vw;
-  margin-right: 30vw;
+  height: 100%;
+  width: min(50vh, 80vw);
+  margin-inline: auto;
   background-color: lightgrey;
   border-left: solid black;
   border-right: solid black;
@@ -29,27 +36,29 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  margin-top: 10vw;
+  margin-top: 10vh;
   margin-left: auto;
   margin-right: auto;
-  width: 30vw;
-  height: 20vh;
+  width: 75%;
+  aspect-ratio: 3 / 2;
   background-color: wheat;
-  border-radius: 1.5vw;
+  border-radius: 1rem;
   border: solid black;
-  font-size: 5vw;
+  font-size: 2rem;
 }
 
 #start_button {
-  display: block;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   margin-top: 30vh;
   margin-left: auto;
   margin-right: auto;
-  font-size: 3vw;
-  width: 20vw;
-  height: 10vh;
+  width: 40%;
+  aspect-ratio: 2 / 1;
   background-color: lavender;
   border: solid black;
+  font-size: 2rem;
 }
 
 #player_menu_header_bar {
@@ -59,58 +68,59 @@
   margin-top: 10vh;
   margin-left: auto;
   margin-right: auto;
-  width: 30vw;
-  height: 10vh;
+  width: 75%;
+  aspect-ratio: 3 / 1;
   background-color: wheat;
-  border-radius: 1.5vw;
+  border-radius: 1rem;
   border: solid black;
-  font-size: 3vw;
+  font-size: 2rem;
 }
 
 #player_buttons {
   display: flex;
   align-items: center;
   justify-content: center;
-  flex-direction: row;
-  gap: 1vw;
+  gap: 2%;
+  padding: 2%;
   margin-top: 20vh;
-  width: 33vw;
-  height: 10vh;
+  width: 75%;
+  aspect-ratio: 4 / 1;
   margin-left: auto;
   margin-right: auto;
 }
 
 .player_button {
+  flex-basis: 100%;
+  height: 100%;
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 10vw;
-  height: 10vh;
-  font-size: 5vh;
+  font-size: 2rem;
   background-color: lavender;
   border: solid black;
 }
 
 #player_number_display {
+  flex-basis: 100%;
+  height: 100%;
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 10vw;
-  height: 10vh;
-  font-size: 5vh;
+  font-size: 2rem;
   background-color: lavender;
   border: solid black;
 }
 
 #map_selection_button {
-  display: block;
-  margin-top: auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 15vh;
   margin-left: auto;
   margin-right: auto;
-  font-size: 3vw;
-  width: 25vw;
-  height: 10vh;
-  margin-top: 15vh;
+  width: 50%;
+  aspect-ratio: 2 / 1;
+  font-size: 2em;
   background-color: lavender;
   border: solid black;
 }
@@ -119,43 +129,42 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  margin-top: 2vh;
+  margin-top: 10vh;
   margin-left: auto;
   margin-right: auto;
-  width: 30vw;
-  height: 5vh;
+  width: 75%;
+  aspect-ratio: 3 / 1;
   background-color: wheat;
-  border-radius: 1.5vw;
+  border-radius: 1rem;
   border: solid black;
-  font-size: 2.5vw;
+  font-size: 2rem;
 }
 
 #map_fields_container {
+  margin: auto;
   overflow-x: hidden;
   overflow-y: auto;
-  margin-top: 10vh;
+  margin-top: 2vh;
   text-align: center;
-  width: 40vw;
-  height: 50vh;
+  width: 75%;
+  height: 50%;
+  font-size: 2rem;
 }
 
 .map_field {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  margin-left: 1vw;
-  margin-right: 1vw;
-  margin-top: 1vh;
-  margin-bottom: 1vh;
-  padding: 1vh;
+  margin-top: 2%;
+  margin-bottom: 2%;
+  padding: 3%;
   background-color: lavender;
-  border-radius: 1.5vw;
   border: solid black;
+  font-size: 2rem;
 }
 
 .map_field_remove {
-  padding: 1vh;
-  border-radius: 1.5vw;
+  padding: 3%;
   background-color: red;
   border: solid black;
 }
@@ -165,16 +174,22 @@
   align-items: center;
   justify-content: center;
   flex-direction: row;
-  gap: 2vw;
+  gap: 2%;
+  padding: 2%;
   margin-top: 4vh;
+  width: 75%;
+  aspect-ratio: 4 / 1;
+  margin-left: auto;
+  margin-right: auto;
 }
 
 #start_game_button {
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 2vw;
-  font-size: 1.5vw;
+  flex-basis: 100%;
+  height: 100%;
+  font-size: 2rem;
   background-color: lavender;
   border: solid black;
 }
@@ -183,18 +198,11 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 2vw;
-  font-size: 1.5vw;
+  flex-basis: 100%;
+  height: 100%;
+  font-size: 2rem;
   background-color: lavender;
   border: solid black;
-}
-
-body {
-  background-image: url(menu_background.jpg);
-  background-repeat: no-repeat;
-  background-size: cover;
-  width: 100vw;
-  height: 100vh;
 }
 
 #game_screen_div {
@@ -205,32 +213,46 @@ body {
 }
 
 #status_message {
-  visibility: hidden;
-  text-align: center;
-  height: 5%;
-  width: 60%;
-  margin-left: auto;
-  margin-right: auto;
-  margin-top: 2vw;
-  background-color: lightgrey;
+  display: none;
+  padding: 1rem;
+  position: absolute;
+  margin: 0;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: lightgray;
   border: solid black;
+}
+
+#status_text {
+  font-size: 2rem;
+  text-align: center;
+  margin-bottom: 1rem;
+}
+
+#status_button {
+  padding: 1rem;
+  text-align: center;
+  background-color: lavender;
+  border: solid black;
+  font-size: 2rem;
 }
 
 .go_back_button {
   display: flex;
   align-items: center;
   justify-content: center;
-  margin-top: 1vh;
-  margin-left: 1vw;
-  height: 5vh;
-  width: 5vw;
-  font-size: 2.5vh;
-  background-color: wheat;
+  margin-top: 2%;
+  margin-left: 2%;
+  width: 20%;
+  aspect-ratio: 2 / 1;
+  font-size: 2rem;
+  background-color: lavender;
   border: solid black;
 }
 
 #end_prompt {
-  padding: 1em;
+  padding: 1rem;
   position: absolute;
   margin: 0;
   top: 50%;
@@ -241,20 +263,20 @@ body {
 }
 
 #end_text {
-  font-size: 1.5em;
+  font-size: 2rem;
   text-align: center;
-  margin-bottom: 1em;
+  margin-bottom: 1rem;
 }
 
 #end_button {
-  padding: 1em;
+  padding: 1rem;
   text-align: center;
   background-color: lavender;
   border: solid black;
 }
 
 #tutorial_prompt {
-  padding: 1em;
+  padding: 1rem;
   position: absolute;
   margin: 0;
   top: 50%;
@@ -265,19 +287,20 @@ body {
 }
 
 #tutorial_text {
-  font-size: 1.5em;
+  font-size: 2rem;
   text-align: center;
-  margin-bottom: 1em;
+  margin-bottom: 1rem;
 }
 
 #begin_button {
-  padding: 1em;
+  padding: 1rem;
   text-align: center;
   background-color: lavender;
   border: solid black;
 }
 
 #player_info {
+  overflow: visible;
   display: flex;
   justify-content: space-around;
   align-items: center;
@@ -288,11 +311,13 @@ body {
 }
 
 .player_info_box {
+  overflow: visible;
   display: flex;
   align-items: center;
 }
 
 .player_info_ball {
+  overflow: visible;
   width: 6vh;
   height: 6vh;
   border-radius: 3vh;
